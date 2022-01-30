@@ -19,11 +19,19 @@ class PostService {
   }
 
   public readPostList(pageId: number, postNumber: number, isDescending: number) {
-    const posts = postRepository.readPostList(pageId, postNumber, isDescending);
-    if (!posts.length) {
+    const postList = postRepository.readPostList(pageId, postNumber, isDescending);
+    if (!postList.length) {
       throw new CustomError(POST_ERROR.notFoundPostList);
     }
-    return posts;
+    return postList;
+  }
+
+  public readPostListByUser(pageId: number, postNumber: number, isDescending: number, user: string) {
+    const postList = postRepository.readPostListByUser(pageId, postNumber, isDescending, user);
+    if (!postList.length) {
+      throw new CustomError(POST_ERROR.notFoundPostList);
+    }
+    return postList;
   }
 
   public updatePost(id: number, title: string, content: string) {

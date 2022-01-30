@@ -51,6 +51,18 @@ class PostController {
     }
   }
 
+  // TODO: fetch 인코딩 되는지 확인
+  public readPostListByUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { user } = req.params;
+      const { pageId, postNumber, isDescending } = req.query as unknown as IPostList;
+      const postList = service.readPostListByUser(pageId, postNumber, +isDescending, user);
+      res.status(200).json({ postList });
+    } catch (err) {
+      next(err);
+    }
+  }
+
   public updatePost(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;

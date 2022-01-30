@@ -42,6 +42,21 @@ class PostRepository {
     return filterPostList;
   }
 
+  public readPostListByUser(pageId: number, postNumber: number, isDescending: number, user: string) {
+    const allPostList = this.allPostList();
+    const postListByUser = allPostList.filter((post) => post.user === user);
+    const postList = postListByUser.slice(postNumber * (pageId - 1), postNumber * pageId);
+    // eslint-disable-next-line no-shadow
+    const filterPostList = postList.map(({ id, title, user, date }) => ({
+      id,
+      title,
+      user,
+      date,
+    }));
+    if (isDescending) filterPostList.reverse();
+    return filterPostList;
+  }
+
   public updatePost(id: number, title: string, content: string) {
     const allPostList = this.allPostList();
     const updatePost = allPostList.map((post) => {
