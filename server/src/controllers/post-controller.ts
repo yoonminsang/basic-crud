@@ -12,6 +12,11 @@ interface IPostList {
   postNumber: number;
 }
 
+interface IUpdatePost {
+  title: string;
+  content: string;
+}
+
 const service = new PostService();
 
 class PostController {
@@ -45,16 +50,16 @@ class PostController {
     }
   }
 
-  // public updatePost(req: Request, res: Response, next: NextFunction) {
-  //   const { id } = req.params;
-  //   const { title, content } = req.body as IPost;
-  //   try {
-  //     await service.updatePost(+id, title, content, req.user.id);
-  //     res.status(200).json({ postId: id });
-  //   } catch (err) {
-  //     next(err);
-  //   }
-  // }
+  public updatePost(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const { title, content } = req.body as IUpdatePost;
+      service.updatePost(+id, title, content);
+      res.status(200).json();
+    } catch (err) {
+      next(err);
+    }
+  }
 
   // public deletePost(req: Request, res: Response, next: NextFunction) {
   //   const { id } = req.params;

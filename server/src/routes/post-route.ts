@@ -11,7 +11,7 @@ const postController = new PostController();
 postRouter.post('/', createPostValidation, postController.createPost);
 postRouter.get('/:id', readPostValidation, postController.readPost);
 postRouter.get('/', readPostListValidation, postController.readPostList);
-// postRouter.put('/:id',  postController.updatePost);
+postRouter.put('/:id', postController.updatePost);
 // postRouter.delete('/:id', postController.deletePost);
 
 export default postRouter;
