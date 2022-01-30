@@ -10,7 +10,7 @@ interface ICreatePost {
 interface IPostList {
   pageId: number;
   postNumber: number;
-  isDescending: boolean;
+  isDescending: number;
 }
 
 interface IUpdatePost {
@@ -44,7 +44,7 @@ class PostController {
   public readPostList(req: Request, res: Response, next: NextFunction) {
     try {
       const { pageId, postNumber, isDescending } = req.query as unknown as IPostList;
-      const postList = service.readPostList(pageId, postNumber, isDescending);
+      const postList = service.readPostList(pageId, postNumber, +isDescending);
       res.status(200).json({ postList });
     } catch (err) {
       next(err);

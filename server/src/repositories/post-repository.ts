@@ -29,13 +29,14 @@ class PostRepository {
     return post;
   }
 
-  public readPostList(pageId: number, postNumber: number, isDescending: boolean) {
+  public readPostList(pageId: number, postNumber: number, isDescending: number) {
     const allPostList = this.allPostList();
     const postList = allPostList.slice(postNumber * (pageId - 1), postNumber * pageId);
-    const filterPostList = postList.map(({ id, title, user }) => ({
+    const filterPostList = postList.map(({ id, title, user, date }) => ({
       id,
       title,
       user,
+      date,
     }));
     if (isDescending) filterPostList.reverse();
     return filterPostList;
