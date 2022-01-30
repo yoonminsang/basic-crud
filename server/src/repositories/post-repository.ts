@@ -5,18 +5,21 @@ interface IPost {
   title: string;
   content: string;
   user: string;
+  date: Date;
 }
 
 // TODO: db try catch
 class PostRepository {
   private allPostList() {
+    connect().push('/post', [], false);
     return connect().getObject<IPost[]>('/post');
   }
 
   public createPost(title: string, content: string, user: string) {
     const allPostList = this.allPostList();
     const nextId = allPostList.length ? allPostList[allPostList.length - 1].id + 1 : 1;
-    connect().push('/post', [{ id: nextId, title, content, user }], false);
+    const date = new Date();
+    connect().push('/post', [{ id: nextId, title, content, user, date }], false);
     return nextId;
   }
 
@@ -40,8 +43,8 @@ class PostRepository {
   public updatePost(id: number, title: string, content: string) {
     const allPostList = this.allPostList();
     const updatePost = allPostList.map((post) => {
-      const { id: updateId, user } = post;
-      if (updateId === id) return { id, title, content, user };
+      const { id: updateId } = post;
+      if (updateId === id) return { ...post, title, content };
       return post;
     });
     connect().push('/post', updatePost);
