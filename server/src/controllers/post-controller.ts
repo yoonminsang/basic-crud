@@ -25,15 +25,15 @@ class PostController {
     }
   }
 
-  // public readPost(req: Request, res: Response, next: NextFunction) {
-  //   const { id } = req.params;
-  //   try {
-  //     const post = await service.readPost(+id);
-  //     res.status(200).json({ post });
-  //   } catch (err) {
-  //     next(err);
-  //   }
-  // }
+  public readPost(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.params;
+    try {
+      const post = service.readPost(+id);
+      res.status(200).json({ post });
+    } catch (err) {
+      next(err);
+    }
+  }
 
   public readPostList(req: Request, res: Response, next: NextFunction) {
     try {

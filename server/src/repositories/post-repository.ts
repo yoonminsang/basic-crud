@@ -20,7 +20,12 @@ class PostRepository {
     return nextId;
   }
 
-  // public readPost(id: number) {}
+  public readPost(id: number) {
+    const allPostList = this.allPostList();
+    const index = allPostList.findIndex((post) => post.id === id);
+    const post = allPostList[index];
+    return post;
+  }
 
   public readPostList(pageId: number, postNumber: number) {
     const allPostList = this.allPostList();

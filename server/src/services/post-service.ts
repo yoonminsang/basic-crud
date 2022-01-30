@@ -10,24 +10,18 @@ class PostService {
     return postId;
   }
 
-  // public readPost(id: number) {
-  //   const postData = await getCustomRepository(PostRepository).readPost(id);
-  //   if (!postData) {
-  //     throw errorGenerator({
-  //       status: 400,
-  //       message: POST_ERROR_MESSAGE.notFoundPostId[0],
-  //       from: FROM,
-  //     });
-  //   }
-  //   const isUpdated = String(postData.createdAt) !== String(postData.updatedAt);
-  //   const post = { ...postData, isUpdated };
-  //   return post;
-  // }
+  public readPost(id: number) {
+    const post = postRepository.readPost(id);
+    if (!post) {
+      throw new CustomError(POST_ERROR.notFoundPost);
+    }
+    return post;
+  }
 
   public readPostList(pageId: number, postNumber: number) {
     const posts = postRepository.readPostList(pageId, postNumber);
     if (!posts.length) {
-      throw new CustomError(POST_ERROR.notFoundPosts);
+      throw new CustomError(POST_ERROR.notFoundPostList);
     }
     return posts;
   }
