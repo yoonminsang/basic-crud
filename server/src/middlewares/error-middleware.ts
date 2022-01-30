@@ -6,8 +6,8 @@ const errorMiddleware = (err: CustomError, _req: Request, res: Response, _next: 
   if (process.env.NODE_ENV === 'development') {
     console.error(err);
   }
-  const { status, errorMessage } = err;
-  res.status(status).json({ errorMessage });
+  const { status, errorMessage, customMessage } = err;
+  res.status(status).json({ errorMessage: customMessage ?? errorMessage });
 };
 
 export default errorMiddleware;
