@@ -19,3 +19,7 @@ logs
 coverage
 
 .DS_Store
+
+db.json
+dev.json
+test.json
