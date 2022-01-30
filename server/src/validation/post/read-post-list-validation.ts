@@ -7,6 +7,7 @@ const readPostListValidation = (req: Request, res: Response, next: NextFunction)
   const schema = Joi.object({
     pageId: Joi.number().integer().positive().required().empty(''),
     postNumber: Joi.number().integer().positive().required().empty(''),
+    isDescending: Joi.boolean().required().empty(''),
   });
   const validationResult = schema.validate(req.query);
   const { error } = validationResult;

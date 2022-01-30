@@ -29,7 +29,7 @@ class PostRepository {
     return post;
   }
 
-  public readPostList(pageId: number, postNumber: number) {
+  public readPostList(pageId: number, postNumber: number, isDescending: boolean) {
     const allPostList = this.allPostList();
     const postList = allPostList.slice(postNumber * (pageId - 1), postNumber * pageId);
     const filterPostList = postList.map(({ id, title, user }) => ({
@@ -37,6 +37,7 @@ class PostRepository {
       title,
       user,
     }));
+    if (isDescending) filterPostList.reverse();
     return filterPostList;
   }
 

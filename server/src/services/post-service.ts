@@ -18,8 +18,8 @@ class PostService {
     return post;
   }
 
-  public readPostList(pageId: number, postNumber: number) {
-    const posts = postRepository.readPostList(pageId, postNumber);
+  public readPostList(pageId: number, postNumber: number, isDescending: boolean) {
+    const posts = postRepository.readPostList(pageId, postNumber, isDescending);
     if (!posts.length) {
       throw new CustomError(POST_ERROR.notFoundPostList);
     }
