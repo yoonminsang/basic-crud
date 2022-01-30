@@ -15,7 +15,7 @@ const paramsUserValidation = (req: Request, res: Response, next: NextFunction): 
   const validationResult = schema.validate(req.params);
   const { error } = validationResult;
   if (error) {
-    throw new CustomError({ ...COMMON_ERROR.invalidQuery });
+    throw new CustomError({ ...COMMON_ERROR.invalidQuery, customMessage: error.message });
   }
 
   next();

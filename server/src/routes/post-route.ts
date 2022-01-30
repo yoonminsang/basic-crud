@@ -4,12 +4,13 @@ import createPostValidation from '@/validation/post/create-post-validation';
 import readPostListValidation from '@/validation/post/read-post-list-validation';
 import paramsIdValidation from '@/validation/post/params-id-validation';
 import updatePostValidation from '@/validation/post/update-post-validation';
+import paramsUserValidation from '@/validation/post/params-user-validation';
 
 const postRouter = Router();
 
 const postController = new PostController();
 
-postRouter.get('/search/:user', readPostListValidation, postController.readPostListByUser);
+postRouter.get('/search/:user', paramsUserValidation, readPostListValidation, postController.readPostListByUser);
 postRouter.post('/', createPostValidation, postController.createPost);
 postRouter.get('/:id', paramsIdValidation, postController.readPost);
 postRouter.get('/', readPostListValidation, postController.readPostList);
