@@ -5,7 +5,7 @@ import readPostListValidation from '@/validation/post/read-post-list-validation'
 import paramsIdValidation from '@/validation/post/params-id-validation';
 import updatePostValidation from '@/validation/post/update-post-validation';
 import paramsUserValidation from '@/validation/post/params-user-validation';
-import paramsTitleValidation from '@/validation/post/params-title-validation copy';
+import paramsTitleValidation from '@/validation/post/params-title-validation';
 
 const postRouter = Router();
 
