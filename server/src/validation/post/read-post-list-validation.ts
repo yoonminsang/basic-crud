@@ -10,7 +10,6 @@ const readPostListValidation = (req: Request, res: Response, next: NextFunction)
   });
   const validationResult = schema.validate(req.query);
   const { error } = validationResult;
-  console.log(error);
   if (error) {
     throw new CustomError({ ...COMMON_ERROR.invalidQuery });
   }
