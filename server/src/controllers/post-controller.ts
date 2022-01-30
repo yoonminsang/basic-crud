@@ -15,7 +15,7 @@ interface IPostList {
 const service = new PostService();
 
 class PostController {
-  createPost(req: Request, res: Response, next: NextFunction) {
+  public createPost(req: Request, res: Response, next: NextFunction) {
     const { title, content, user } = req.body as ICreatePost;
     try {
       const postId = service.createPost(title, content, user);
@@ -25,7 +25,7 @@ class PostController {
     }
   }
 
-  // async readPost(req: Request, res: Response, next: NextFunction) {
+  // public readPost(req: Request, res: Response, next: NextFunction) {
   //   const { id } = req.params;
   //   try {
   //     const post = await service.readPost(+id);
@@ -35,7 +35,7 @@ class PostController {
   //   }
   // }
 
-  readPostList(req: Request, res: Response, next: NextFunction) {
+  public readPostList(req: Request, res: Response, next: NextFunction) {
     try {
       const { pageId, postNumber } = req.query as unknown as IPostList;
       const postList = service.readPostList(pageId, postNumber);
@@ -45,7 +45,7 @@ class PostController {
     }
   }
 
-  // async updatePost(req: Request, res: Response, next: NextFunction) {
+  // public updatePost(req: Request, res: Response, next: NextFunction) {
   //   const { id } = req.params;
   //   const { title, content } = req.body as IPost;
   //   try {
@@ -56,7 +56,7 @@ class PostController {
   //   }
   // }
 
-  // async deletePost(req: Request, res: Response, next: NextFunction) {
+  // public deletePost(req: Request, res: Response, next: NextFunction) {
   //   const { id } = req.params;
   //   try {
   //     await service.deletePost(+id, req.user.id);

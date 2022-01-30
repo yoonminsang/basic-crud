@@ -5,12 +5,12 @@ import PostRepository from '@/repositories/post-repository';
 const postRepository = new PostRepository();
 
 class PostService {
-  createPost(title: string, content: string, user: string) {
+  public createPost(title: string, content: string, user: string) {
     const postId = postRepository.createPost(title, content, user);
     return postId;
   }
 
-  // async readPost(id: number) {
+  // public readPost(id: number) {
   //   const postData = await getCustomRepository(PostRepository).readPost(id);
   //   if (!postData) {
   //     throw errorGenerator({
@@ -24,7 +24,7 @@ class PostService {
   //   return post;
   // }
 
-  readPostList(pageId: number, postNumber: number) {
+  public readPostList(pageId: number, postNumber: number) {
     const posts = postRepository.readPostList(pageId, postNumber);
     if (!posts.length) {
       throw new CustomError(POST_ERROR.notFoundPosts);
@@ -32,7 +32,7 @@ class PostService {
     return posts;
   }
 
-  // async updatePost(id: number, title: string, content: string, userId: string) {
+  // public updatePost(id: number, title: string, content: string, userId: string) {
   //   const post = await getCustomRepository(PostRepository).getPostForUserId(id);
   //   if (!post) {
   //     throw errorGenerator({
@@ -51,7 +51,7 @@ class PostService {
   //   await getCustomRepository(PostRepository).updatePost(id, title, content);
   // }
 
-  // async deletePost(id: number, userId: string) {
+  // public deletePost(id: number, userId: string) {
   //   const post = await getCustomRepository(PostRepository).getPostForUserId(id);
   //   if (!post) {
   //     throw errorGenerator({
