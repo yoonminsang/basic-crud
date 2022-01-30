@@ -7,6 +7,10 @@ export const COMMON_ERROR = {
     status: 400,
     errorMessage: '잘못된 요청입니다',
   },
+  invalidCode: {
+    status: 500,
+    errorMessage: '내부 코드 오류',
+  },
 };
 
 export const POST_ERROR = {

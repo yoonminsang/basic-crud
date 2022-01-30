@@ -10,7 +10,9 @@ const postRouter = Router();
 
 const postController = new PostController();
 
-postRouter.get('/search/:user', paramsUserValidation, readPostListValidation, postController.readPostListByUser);
+postRouter.get('/search/user/:user', paramsUserValidation, readPostListValidation, postController.readPostListByUser);
+postRouter.get('/search/title/:title', readPostListValidation, postController.readPostListByTitle);
+postRouter.get('/search/content/:content', readPostListValidation, postController.readPostListByContent);
 postRouter.post('/', createPostValidation, postController.createPost);
 postRouter.get('/:id', paramsIdValidation, postController.readPost);
 postRouter.get('/', readPostListValidation, postController.readPostList);

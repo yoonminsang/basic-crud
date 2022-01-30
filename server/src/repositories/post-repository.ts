@@ -1,4 +1,7 @@
 import connect from '@/config/db-config';
+import { COMMON_ERROR } from '@/constants/error';
+import CustomError from '@/error/custom-error';
+import { TSearchData } from '@/types';
 
 interface IPost {
   id: number;
@@ -29,9 +32,7 @@ class PostRepository {
     return post;
   }
 
-  public readPostList(pageId: number, postNumber: number, isDescending: number) {
-    const allPostList = this.allPostList();
-    const postList = allPostList.slice(postNumber * (pageId - 1), postNumber * pageId);
+  private filterPostList(postList: IPost[], isDescending: number) {
     const filterPostList = postList.map(({ id, title, user, date }) => ({
       id,
       title,
@@ -42,18 +43,47 @@ class PostRepository {
     return filterPostList;
   }
 
-  public readPostListByUser(pageId: number, postNumber: number, isDescending: number, user: string) {
+  public readPostList(pageId: number, postNumber: number, isDescending: number) {
     const allPostList = this.allPostList();
-    const postListByUser = allPostList.filter((post) => post.user === user);
-    const postList = postListByUser.slice(postNumber * (pageId - 1), postNumber * pageId);
+    const postList = allPostList.slice(postNumber * (pageId - 1), postNumber * pageId);
+    const filterPostList = this.filterPostList(postList, isDescending);
+    return filterPostList;
+  }
+
+  private getSearchData(searchDataName: TSearchData, post: IPost) {
+    let searchData = '';
+    switch (searchDataName) {
+      case 'title':
+        searchData = post.title;
+        break;
+      case 'content':
+        searchData = post.content;
+        break;
+      case 'user':
+        searchData = post.user;
+        break;
+      default:
+        throw new CustomError(COMMON_ERROR.invalidCode);
+    }
+    return searchData;
+  }
+
+  public readPostListByData(
+    pageId: number,
+    postNumber: number,
+    isDescending: number,
+    searchDataName: TSearchData,
+    data: string,
+  ) {
+    const allPostList = this.allPostList();
+    const regex = RegExp(data, 'gi');
+    const postListByData = allPostList.filter((post) => {
+      const searchData = this.getSearchData(searchDataName, post);
+      return searchData.match(regex);
+    });
+    const postList = postListByData.slice(postNumber * (pageId - 1), postNumber * pageId);
     // eslint-disable-next-line no-shadow
-    const filterPostList = postList.map(({ id, title, user, date }) => ({
-      id,
-      title,
-      user,
-      date,
-    }));
-    if (isDescending) filterPostList.reverse();
+    const filterPostList = this.filterPostList(postList, isDescending);
     return filterPostList;
   }
 

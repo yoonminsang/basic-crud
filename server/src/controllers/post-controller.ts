@@ -20,6 +20,8 @@ interface IUpdatePost {
 
 const service = new PostService();
 
+// TODO: 캐시 처리
+
 class PostController {
   public createPost(req: Request, res: Response, next: NextFunction) {
     const { title, content, user } = req.body as ICreatePost;
@@ -56,7 +58,29 @@ class PostController {
     try {
       const { user } = req.params;
       const { pageId, postNumber, isDescending } = req.query as unknown as IPostList;
-      const postList = service.readPostListByUser(pageId, postNumber, +isDescending, user);
+      const postList = service.readPostListByData(pageId, postNumber, +isDescending, 'user', user);
+      res.status(200).json({ postList });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  public readPostListByTitle(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { title } = req.params;
+      const { pageId, postNumber, isDescending } = req.query as unknown as IPostList;
+      const postList = service.readPostListByData(pageId, postNumber, +isDescending, 'title', title);
+      res.status(200).json({ postList });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  public readPostListByContent(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { content } = req.params;
+      const { pageId, postNumber, isDescending } = req.query as unknown as IPostList;
+      const postList = service.readPostListByData(pageId, postNumber, +isDescending, 'content', content);
       res.status(200).json({ postList });
     } catch (err) {
       next(err);
