@@ -3,7 +3,7 @@ import CustomError from '@/error/custom-error';
 import { Request, Response, NextFunction } from 'express';
 import Joi from 'joi';
 
-const readPostValidation = (req: Request, res: Response, next: NextFunction): void => {
+const paramsIdValidation = (req: Request, res: Response, next: NextFunction): void => {
   const schema = Joi.object({
     id: Joi.number().integer().positive().required().empty(''),
   });
@@ -16,4 +16,4 @@ const readPostValidation = (req: Request, res: Response, next: NextFunction): vo
   next();
 };
 
-export default readPostValidation;
+export default paramsIdValidation;
