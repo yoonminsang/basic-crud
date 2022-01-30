@@ -5,13 +5,19 @@ import readPostListValidation from '@/validation/post/read-post-list-validation'
 import paramsIdValidation from '@/validation/post/params-id-validation';
 import updatePostValidation from '@/validation/post/update-post-validation';
 import paramsUserValidation from '@/validation/post/params-user-validation';
+import paramsTitleValidation from '@/validation/post/params-title-validation copy';
 
 const postRouter = Router();
 
 const postController = new PostController();
 
 postRouter.get('/search/user/:user', paramsUserValidation, readPostListValidation, postController.readPostListByUser);
-postRouter.get('/search/title/:title', readPostListValidation, postController.readPostListByTitle);
+postRouter.get(
+  '/search/title/:title',
+  paramsTitleValidation,
+  readPostListValidation,
+  postController.readPostListByTitle,
+);
 postRouter.get('/search/content/:content', readPostListValidation, postController.readPostListByContent);
 postRouter.post('/', createPostValidation, postController.createPost);
 postRouter.get('/:id', paramsIdValidation, postController.readPost);
