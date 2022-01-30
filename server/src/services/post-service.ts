@@ -1,9 +1,11 @@
+import { POST_ERROR } from '@/constants/error';
+import CustomError from '@/error/custom-error';
 import PostRepository from '@/repositories/post-repository';
 
 const postRepository = new PostRepository();
 
 class PostService {
-  async createPost(title: string, content: string, user: string) {
+  createPost(title: string, content: string, user: string) {
     const postId = postRepository.createPost(title, content, user);
     return postId;
   }
@@ -22,20 +24,13 @@ class PostService {
   //   return post;
   // }
 
-  // async readPostList() {
-  //   const postList = await getCustomRepository(PostRepository).readPostList();
-  //   if (!postList.length) {
-  //     throw errorGenerator({
-  //       status: 400,
-  //       message: POST_ERROR_MESSAGE.notFoundPostId[0],
-  //       from: FROM,
-  //     });
-  //   }
-  //   // raw query 예외처리
-  //   return postList.map((list) => {
-  //     return { ...list, user: { nickname: list.nickname } };
-  //   });
-  // }
+  readPostList(pageId: number, postNumber: number) {
+    const posts = postRepository.readPostList(pageId, postNumber);
+    if (!posts.length) {
+      throw new CustomError(POST_ERROR.notFoundPosts);
+    }
+    return posts;
+  }
 
   // async updatePost(id: number, title: string, content: string, userId: string) {
   //   const post = await getCustomRepository(PostRepository).getPostForUserId(id);

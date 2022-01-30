@@ -7,13 +7,18 @@ interface ICreatePost {
   user: string;
 }
 
+interface IPostList {
+  pageId: number;
+  postNumber: number;
+}
+
 const service = new PostService();
 
 class PostController {
-  async createPost(req: Request, res: Response, next: NextFunction) {
+  createPost(req: Request, res: Response, next: NextFunction) {
     const { title, content, user } = req.body as ICreatePost;
     try {
-      const postId = await service.createPost(title, content, user);
+      const postId = service.createPost(title, content, user);
       res.status(200).json({ postId });
     } catch (err) {
       next(err);
@@ -30,15 +35,15 @@ class PostController {
   //   }
   // }
 
-  // async readPostList(req: Request, res: Response, next: NextFunction) {
-  //   try {
-  //     const lastId = req.query.lastId as string;
-  //     const postList = lastId ? await service.readPostListByLastId(+lastId) : await service.readPostList();
-  //     res.status(200).json({ postList });
-  //   } catch (err) {
-  //     next(err);
-  //   }
-  // }
+  readPostList(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { pageId, postNumber } = req.query as unknown as IPostList;
+      const postList = service.readPostList(pageId, postNumber);
+      res.status(200).json({ postList });
+    } catch (err) {
+      next(err);
+    }
+  }
 
   // async updatePost(req: Request, res: Response, next: NextFunction) {
   //   const { id } = req.params;
