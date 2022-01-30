@@ -9,6 +9,7 @@ const postRouter = Router();
 
 const postController = new PostController();
 
+postRouter.get('/search/:user', readPostListValidation, postController.readPostListByUser);
 postRouter.post('/', createPostValidation, postController.createPost);
 postRouter.get('/:id', paramsIdValidation, postController.readPost);
 postRouter.get('/', readPostListValidation, postController.readPostList);

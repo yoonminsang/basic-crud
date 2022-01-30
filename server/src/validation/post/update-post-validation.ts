@@ -3,15 +3,13 @@ import Joi from 'joi';
 import { POST_ENTITY } from '@/constants/entity';
 import { COMMON_ERROR } from '@/constants/error';
 import CustomError from '@/error/custom-error';
-
-const exceedMaxLengthTitle = `제목은 ${POST_ENTITY.titleMaxLength}자를 넘길 수 없습니다`;
-const fillTitle = `제목을 입력해주세요`;
+import { JOI_ERROR } from '@/constants/joi-error';
 
 const updatePostValidation = (req: Request, _res: Response, next: NextFunction): void => {
   const schema = Joi.object({
     title: Joi.string().max(POST_ENTITY.titleMaxLength).required().empty('').messages({
-      'string.max': exceedMaxLengthTitle,
-      'any.required': fillTitle,
+      'string.max': JOI_ERROR.exceedMaxLengthTitle,
+      'any.required': JOI_ERROR.fillTitle,
     }),
     content: Joi.string(),
   });
