@@ -13,6 +13,6 @@ postRouter.post('/', createPostValidation, postController.createPost);
 postRouter.get('/:id', paramsIdValidation, postController.readPost);
 postRouter.get('/', readPostListValidation, postController.readPostList);
 postRouter.put('/:id', paramsIdValidation, updatePostValidation, postController.updatePost);
-// postRouter.delete('/:id', postController.deletePost);
+postRouter.delete('/:id', paramsIdValidation, postController.deletePost);
 
 export default postRouter;

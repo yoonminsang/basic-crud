@@ -44,11 +44,14 @@ class PostRepository {
       if (updateId === id) return { id, title, content, user };
       return post;
     });
-    console.log(updatePost);
     connect().push('/post', updatePost);
   }
 
-  // public deletePost(id: number) {}
+  public deletePost(id: number) {
+    const allPostList = this.allPostList();
+    const deletePost = allPostList.filter((post) => post.id !== id);
+    connect().push('/post', deletePost);
+  }
 }
 
 export default PostRepository;

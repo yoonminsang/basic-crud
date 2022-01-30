@@ -61,15 +61,15 @@ class PostController {
     }
   }
 
-  // public deletePost(req: Request, res: Response, next: NextFunction) {
-  //   const { id } = req.params;
-  //   try {
-  //     await service.deletePost(+id, req.user.id);
-  //     res.status(200).json();
-  //   } catch (err) {
-  //     next(err);
-  //   }
-  // }
+  public deletePost(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      service.deletePost(+id);
+      res.status(200).json();
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 export default PostController;
