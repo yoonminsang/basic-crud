@@ -19,9 +19,8 @@ module.exports = merge(common, {
     historyApiFallback: true,
     proxy: {
       '/api': {
-        target: 'https://my-json-server.typicode.com/',
+        target: 'http://localhost:4000',
         changeOrigin: true,
-        pathRewrite: { '/api': '/' },
       },
     },
   },
