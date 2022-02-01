@@ -34,10 +34,7 @@ class PostStore extends LocalStore {
     try {
       const key = `pageId:${pageId} postNumber${postNumber}`;
       const state = this.getLocalStorage(POST_LIST_KEY, {}) as IState;
-      if (state[POST_LIST_KEY] && state[POST_LIST_KEY][key]) {
-        console.log('getPostList 존재');
-      } else {
-        console.log('getPostList 존재안함');
+      if (!state[POST_LIST_KEY][key]) {
         const { postList } = await getPostList(pageId, postNumber, isDescending);
         this.setLocalStorage<TPostList>(POST_LIST_KEY, { [key]: postList });
       }
@@ -56,16 +53,60 @@ class PostStore extends LocalStore {
     try {
       const key = `searchType:${searchType} searchContent:${searchContent} pageId:${pageId} postNumber${postNumber}`;
       const state = this.getLocalStorage(SEARCH_POST_LIST_KEY, {}) as IState;
-      if (state[SEARCH_POST_LIST_KEY] && state[SEARCH_POST_LIST_KEY][key]) {
-        console.log('getSearchPostList 존재');
-      } else {
-        console.log('getSearchPostList 존재안함');
+      if (!state[SEARCH_POST_LIST_KEY][key]) {
         const { postList } = await getSearchPostList(searchType, searchContent, pageId, postNumber, isDescending);
         this.setLocalStorage<TPostList>(SEARCH_POST_LIST_KEY, { [key]: postList });
       }
     } catch (err) {
       console.error(err);
     }
+  }
+
+  public async getPost(postId: number) {
+    try {
+      const key = postId;
+      const state = this.getLocalStorage(POST_KEY, {}) as IState;
+      if (!state[POST_KEY][key]) {
+        const { post } = await getPost(postId);
+        this.setLocalStorage<TPost>(POST_KEY, { [key]: post });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  public async createPost(title: string, content: string, user: string) {
+    try {
+      const { postId } = await createPost(title, content, user);
+      this.initCash();
+      return postId;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  public async updatePost(postId: number, title: string, content: string) {
+    try {
+      await updatePost(postId, title, content);
+      this.initCash();
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  public async deletePost(postId: number) {
+    try {
+      await deletePost(postId);
+      this.initCash();
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  private initCash() {
+    this.setLocalStorage(POST_LIST_KEY, {});
+    this.setLocalStorage(SEARCH_POST_LIST_KEY, {});
+    this.setLocalStorage(POST_KEY, {});
   }
 }
 
