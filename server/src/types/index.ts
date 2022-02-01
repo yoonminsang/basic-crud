@@ -1,1 +1,1 @@
-export type TSearchData = 'title' | 'content' | 'user';
+export type TSearchType = 'title' | 'content' | 'user';

@@ -14,10 +14,6 @@ export const COMMON_ERROR = {
 };
 
 export const POST_ERROR = {
-  notFoundPostList: {
-    status: 400,
-    errorMessage: '글 목록이 존재하지 않습니다',
-  },
   notFoundPost: {
     status: 400,
     errorMessage: '글이 존재하지 않습니다',

@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import PostService from '@/services/post-service';
+import { TSearchType } from '@/types';
 
 interface ICreatePost {
   title: string;
@@ -11,6 +12,11 @@ interface IPostList {
   pageId: number;
   postNumber: number;
   isDescending: number;
+}
+
+interface ISearchPostList extends IPostList {
+  searchType: TSearchType;
+  searchContent: string;
 }
 
 interface IUpdatePost {
@@ -53,33 +59,10 @@ class PostController {
     }
   }
 
-  public readPostListByUser(req: Request, res: Response, next: NextFunction) {
+  public readSearchPostList(req: Request, res: Response, next: NextFunction) {
     try {
-      const { user } = req.params;
-      const { pageId, postNumber, isDescending } = req.query as unknown as IPostList;
-      const postList = service.readPostListByData(pageId, postNumber, +isDescending, 'user', user);
-      res.status(200).json({ postList });
-    } catch (err) {
-      next(err);
-    }
-  }
-
-  public readPostListByTitle(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { title } = req.params;
-      const { pageId, postNumber, isDescending } = req.query as unknown as IPostList;
-      const postList = service.readPostListByData(pageId, postNumber, +isDescending, 'title', title);
-      res.status(200).json({ postList });
-    } catch (err) {
-      next(err);
-    }
-  }
-
-  public readPostListByContent(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { content } = req.params;
-      const { pageId, postNumber, isDescending } = req.query as unknown as IPostList;
-      const postList = service.readPostListByData(pageId, postNumber, +isDescending, 'content', content);
+      const { searchType, searchContent, pageId, postNumber, isDescending } = req.query as unknown as ISearchPostList;
+      const postList = service.readSearchPostList(pageId, postNumber, +isDescending, searchType, searchContent);
       res.status(200).json({ postList });
     } catch (err) {
       next(err);

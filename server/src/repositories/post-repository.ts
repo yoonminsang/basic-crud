@@ -1,7 +1,7 @@
 import connect from '@/config/db-config';
 import { COMMON_ERROR } from '@/constants/error';
 import CustomError from '@/error/custom-error';
-import { TSearchData } from '@/types';
+import { TSearchType } from '@/types';
 
 export interface IPost {
   title: string;
@@ -53,37 +53,16 @@ class PostRepository {
     return filterPostList;
   }
 
-  private getSearchData(searchDataName: TSearchData, post: IPostDetail): string {
-    let searchData = '';
-    switch (searchDataName) {
-      case 'title':
-        searchData = post.title;
-        break;
-      case 'content':
-        searchData = post.content;
-        break;
-      case 'user':
-        searchData = post.user;
-        break;
-      default:
-        throw new CustomError(COMMON_ERROR.invalidCode);
-    }
-    return searchData;
-  }
-
-  public readPostListByData(
+  public readSearchPostList(
     pageId: number,
     postNumber: number,
     isDescending: number,
-    searchDataName: TSearchData,
-    data: string,
+    searchType: TSearchType,
+    searchContent: string,
   ): IPost[] {
     const allPostList = this.allPostList();
-    const regex = RegExp(data, 'gi');
-    const postListByData = allPostList.filter((post) => {
-      const searchData = this.getSearchData(searchDataName, post);
-      return searchData.match(regex);
-    });
+    const regex = RegExp(searchContent, 'gi');
+    const postListByData = allPostList.filter((post) => post[searchType].match(regex));
     const postList = postListByData.slice(postNumber * (pageId - 1), postNumber * pageId);
     // eslint-disable-next-line no-shadow
     const filterPostList = this.filterPostList(postList, isDescending);

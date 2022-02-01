@@ -1,7 +1,7 @@
 import { POST_ERROR } from '@/constants/error';
 import CustomError from '@/error/custom-error';
 import PostRepository from '@/repositories/post-repository';
-import { TSearchData } from '@/types';
+import { TSearchType } from '@/types';
 
 const postRepository = new PostRepository();
 
@@ -22,23 +22,17 @@ class PostService {
 
   public readPostList(pageId: number, postNumber: number, isDescending: number) {
     const postList = postRepository.readPostList(pageId, postNumber, isDescending);
-    if (!postList.length) {
-      throw new CustomError(POST_ERROR.notFoundPostList);
-    }
     return postList;
   }
 
-  public readPostListByData(
+  public readSearchPostList(
     pageId: number,
     postNumber: number,
     isDescending: number,
-    searchDataName: TSearchData,
-    user: string,
+    searchType: TSearchType,
+    searchContent: string,
   ) {
-    const postList = postRepository.readPostListByData(pageId, postNumber, isDescending, searchDataName, user);
-    if (!postList.length) {
-      throw new CustomError(POST_ERROR.notFoundPostList);
-    }
+    const postList = postRepository.readSearchPostList(pageId, postNumber, isDescending, searchType, searchContent);
     return postList;
   }
 
