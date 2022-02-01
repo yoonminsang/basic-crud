@@ -3,22 +3,25 @@ import { COMMON_ERROR } from '@/constants/error';
 import CustomError from '@/error/custom-error';
 import { TSearchData } from '@/types';
 
-interface IPost {
-  id: number;
+export interface IPost {
   title: string;
-  content: string;
   user: string;
   date: Date;
+  id: number;
+}
+
+export interface IPostDetail extends IPost {
+  content: string;
 }
 
 // TODO: db try catch
 class PostRepository {
-  private allPostList() {
+  private allPostList(): IPostDetail[] {
     connect().push('/post', [], false);
-    return connect().getObject<IPost[]>('/post');
+    return connect().getObject<IPostDetail[]>('/post');
   }
 
-  public createPost(title: string, content: string, user: string) {
+  public createPost(title: string, content: string, user: string): number {
     const allPostList = this.allPostList();
     const nextId = allPostList.length ? allPostList[allPostList.length - 1].id + 1 : 1;
     const date = new Date();
@@ -26,13 +29,13 @@ class PostRepository {
     return nextId;
   }
 
-  public readPost(id: number) {
+  public readPost(id: number): IPostDetail | undefined {
     const allPostList = this.allPostList();
     const post = allPostList.find((_post) => _post.id === id);
     return post;
   }
 
-  private filterPostList(postList: IPost[], isDescending: number) {
+  private filterPostList(postList: IPost[], isDescending: number): IPost[] {
     const filterPostList = postList.map(({ id, title, user, date }) => ({
       id,
       title,
@@ -43,14 +46,14 @@ class PostRepository {
     return filterPostList;
   }
 
-  public readPostList(pageId: number, postNumber: number, isDescending: number) {
+  public readPostList(pageId: number, postNumber: number, isDescending: number): IPost[] {
     const allPostList = this.allPostList();
     const postList = allPostList.slice(postNumber * (pageId - 1), postNumber * pageId);
     const filterPostList = this.filterPostList(postList, isDescending);
     return filterPostList;
   }
 
-  private getSearchData(searchDataName: TSearchData, post: IPost) {
+  private getSearchData(searchDataName: TSearchData, post: IPostDetail): string {
     let searchData = '';
     switch (searchDataName) {
       case 'title':
@@ -74,7 +77,7 @@ class PostRepository {
     isDescending: number,
     searchDataName: TSearchData,
     data: string,
-  ) {
+  ): IPost[] {
     const allPostList = this.allPostList();
     const regex = RegExp(data, 'gi');
     const postListByData = allPostList.filter((post) => {
@@ -87,7 +90,7 @@ class PostRepository {
     return filterPostList;
   }
 
-  public updatePost(id: number, title: string, content: string) {
+  public updatePost(id: number, title: string, content: string): void {
     const allPostList = this.allPostList();
     const updatePost = allPostList.map((post) => {
       const { id: updateId } = post;
@@ -97,7 +100,7 @@ class PostRepository {
     connect().push('/post', updatePost);
   }
 
-  public deletePost(id: number) {
+  public deletePost(id: number): void {
     const allPostList = this.allPostList();
     const deletePost = allPostList.filter((post) => post.id !== id);
     connect().push('/post', deletePost);
