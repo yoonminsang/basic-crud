@@ -53,7 +53,6 @@ class PostController {
     }
   }
 
-  // TODO: fetch 인코딩 되는지 확인
   public readPostListByUser(req: Request, res: Response, next: NextFunction) {
     try {
       const { user } = req.params;
@@ -92,7 +91,7 @@ class PostController {
       const { id } = req.params;
       const { title, content } = req.body as IUpdatePost;
       service.updatePost(+id, title, content);
-      res.status(200).json();
+      res.status(200).json({});
     } catch (err) {
       next(err);
     }
@@ -102,7 +101,7 @@ class PostController {
     try {
       const { id } = req.params;
       service.deletePost(+id);
-      res.status(200).json();
+      res.status(200).json({});
     } catch (err) {
       next(err);
     }
