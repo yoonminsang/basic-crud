@@ -1,17 +1,36 @@
 import Router from './core/router';
 import { ClassContructor, IRoute } from './core/types';
 import NotFoundPage from './pages/not-found-page';
+import PostListPage from './pages/post-list-page';
+import PostPage from './pages/post-page';
+import PostWritePage from './pages/post-write-page';
+import { addLoader } from './utils/loader';
 
 class App {
   target: HTMLElement;
+  loaderTarget: HTMLElement;
   routes: IRoute[];
   NotFoundPage: ClassContructor;
 
-  constructor(target: HTMLElement) {
+  constructor(target: HTMLElement, loaderTarget: HTMLElement) {
     this.target = target;
-    this.routes = [];
+    this.loaderTarget = loaderTarget;
+    this.routes = [
+      { path: '/', component: PostListPage },
+      { path: '/:pageId', component: PostListPage },
+      { path: '/post/:postId', component: PostPage },
+      { path: '/post/write', component: PostWritePage },
+      { path: '/post/modify/:postId', component: PostWritePage },
+      { path: '/post/search/:searchType/:searchContent', component: PostListPage },
+      { path: '/post/search/:searchType/:searchContent/:pageId', component: PostListPage },
+    ];
     this.NotFoundPage = NotFoundPage;
+    this.init();
     this.render();
+  }
+
+  init() {
+    addLoader(this.loaderTarget);
   }
 
   render() {
