@@ -23,11 +23,12 @@ async function request<T>(method: Method, url: string, body?: unknown): Promise<
     };
     const res = await fetch(realUrl, option);
     const data = await res.json();
-    console.log('request data', data);
     if (res.status >= 400) throw data;
     return data;
   } catch (err) {
-    console.log(err);
+    const { errorMessage } = err as IError;
+    if (errorMessage) alert(errorMessage);
+    // else console.error(err);
     throw err;
   } finally {
     window.dispatchEvent(requestEndEvent);

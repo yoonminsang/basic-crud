@@ -44,6 +44,8 @@ export const createStore = (reducer: TReducer) => {
   };
 };
 
+// 사용법
+
 // const initState = { value: 0 };
 // function counterReducer(state = initState, action: IReduxAction) {
 //   switch (action.type) {

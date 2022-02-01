@@ -5,7 +5,7 @@ import Component from '@/core/component';
 import './not-found-page.css';
 
 class NotFoundPage extends Component {
-  markup() {
+  public markup(): string {
     return (
       <div class="not-found">
         <span>404</span>

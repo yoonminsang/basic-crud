@@ -1,7 +1,7 @@
 import { IPostData, IPostListData } from '@/types/IPost';
 import request from './request';
 
-type TSearchType = 'user' | 'title' | 'content';
+export type TSearchType = 'user' | 'title' | 'content';
 
 export const getPostList = (pageId: number, postNumber: number, isDescending: boolean) =>
   request<IPostListData>(
