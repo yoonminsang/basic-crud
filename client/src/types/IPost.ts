@@ -5,10 +5,6 @@ export interface IPost {
   id: number;
 }
 
-export interface IPostData {
-  post: IPost;
-}
-
 export interface IPostDetail extends IPost {
   content: string;
 }
@@ -19,4 +15,8 @@ export interface IPostDetailData {
 
 export interface IPostListData {
   postList: IPost[];
+}
+
+export interface ICreatePostData {
+  postId: string;
 }

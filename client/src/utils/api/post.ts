@@ -1,4 +1,4 @@
-import { IPostData, IPostListData } from '@/types/IPost';
+import { ICreatePostData, IPostDetailData, IPostListData } from '@/types/IPost';
 import request from './request';
 
 export type TSearchType = 'user' | 'title' | 'content';
@@ -23,10 +23,10 @@ export const getSearchPostList = (
     )}`,
   );
 
-export const getPost = (postId: number) => request<IPostData>('GET', `/api/post/${postId}`);
+export const getPost = (postId: number) => request<IPostDetailData>('GET', `/api/post/${postId}`);
 
 export const createPost = (title: string, content: string, user: string) =>
-  request('POST', '/api/post', { title, content, user });
+  request<ICreatePostData>('POST', '/api/post', { title, content, user });
 
 export const updatePost = (postId: number, title: string, content: string) =>
   request('PUT', `/api/post/${postId}`, { title, content });
