@@ -49,7 +49,9 @@ abstract class Component {
     const { type, props, children } = node;
 
     // element를 만듦
-    const element = document.createElement(type);
+    const element = ['svg', 'circle'].includes(type)
+      ? document.createElementNS('http://www.w3.org/2000/svg', type)
+      : document.createElement(type);
 
     // props가 있는 경우에 attribute를 추가
     if (props) {
@@ -162,7 +164,8 @@ abstract class Component {
 
   // 자식 component를 추가하는 메소드
   // jsx에서 클래스를 xml 형태로 불러오지 못하기 때문에 필요
-  public appendComponent(_target: HTMLElement) {}
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public appendComponent(target: HTMLElement) {}
 
   public markup() {
     return '';
