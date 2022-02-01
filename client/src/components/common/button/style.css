@@ -1,0 +1,27 @@
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary);
+  color: var(--white);
+  font-weight: 500;
+  padding: 5px 0;
+  border-radius: 10px;
+  width: 100px;
+}
+
+.button:hover {
+  background-color: var(--primary-3);
+}
+
+.button:disabled {
+  background-color: var(--primary-2);
+}
+
+.button ~ .button {
+  margin-top: 10px;
+}
+
+.button.large {
+  width: 200px;
+}
