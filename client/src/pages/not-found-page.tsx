@@ -5,11 +5,6 @@ import Component from '@/core/component';
 import './not-found-page.css';
 
 class NotFoundPage extends Component {
-  constructor(target: HTMLElement) {
-    super(target);
-    this.state = { count: 1 };
-  }
-
   markup() {
     return (
       <div class="not-found">

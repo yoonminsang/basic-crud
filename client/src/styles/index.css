@@ -63,8 +63,6 @@ html::-webkit-scrollbar-button {
   height: 0;
 }
 
-/* TODO: 폰트 설정*/
-
 /* noto-sans-kr-regular - korean */
 @font-face {
   font-family: 'Noto Sans KR';
