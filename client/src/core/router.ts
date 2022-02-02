@@ -65,8 +65,9 @@ class Router {
   }
 
   private push(url: string) {
+    const [pathname] = url.split('?');
     window.history.pushState(null, '', url);
-    routerContext.setState({ pathname: url, query: getQuery() });
+    routerContext.setState({ pathname, query: getQuery() });
     this.route();
   }
 
