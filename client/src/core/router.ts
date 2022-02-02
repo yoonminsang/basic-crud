@@ -22,8 +22,12 @@ class Router {
   }
 
   private set() {
-    routerContext.setState({ push: (url: string) => this.push(url) });
-    routerContext.setState({ goBack: () => this.goBack() });
+    routerContext.setState({
+      pathname: getPathname(),
+      query: getQuery(),
+      push: (url: string) => this.push(url),
+      goBack: () => this.goBack(),
+    });
   }
 
   private route() {

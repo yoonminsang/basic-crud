@@ -1,13 +1,12 @@
 import { IRouterState, TState } from './types';
-import { getPathname, getQuery } from './utils';
 
 class RouterContext {
   state: IRouterState;
 
   constructor() {
     this.state = {
-      pathname: getPathname(),
-      query: getQuery(),
+      pathname: '',
+      query: {},
       params: {},
       push: () => {},
       goBack: () => {},
