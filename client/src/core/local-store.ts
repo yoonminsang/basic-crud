@@ -17,14 +17,14 @@ abstract class LocalStore extends Observable {
     } else {
       const nextState = { [key]: parseItem };
       this.setState(nextState);
-      return nextState;
+      return parseItem;
     }
   }
 
   public setInitialLocalStorage(key: string, initial: any) {
     const stringifyInitial = JSON.stringify(initial);
     localStorage.setItem(key, stringifyInitial);
-    const nextState = { [key]: stringifyInitial };
+    const nextState = { [key]: initial };
     this.setState(nextState);
   }
 }
