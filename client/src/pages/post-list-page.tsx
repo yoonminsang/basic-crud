@@ -4,20 +4,21 @@ import jsx from '@/core/jsx';
 import Component from '@/core/component';
 import Header from '@/components/common/header';
 import PostList from '@/components/post-list';
+import './post-list-page.css';
 
 class PostListPage extends Component {
   public markup(): string {
     return (
-      <div>
+      <div class="wrapper">
         <header class="header" component />
-        <content class="post-list" component />
+        <content class="content" component />
       </div>
     );
   }
 
   public appendComponent(target: HTMLElement): void {
     const $header = target.querySelector('.header') as HTMLElement;
-    const $postList = target.querySelector('.post-list') as HTMLElement;
+    const $postList = target.querySelector('.content') as HTMLElement;
     new Header($header);
     new PostList($postList);
   }

@@ -1,7 +1,7 @@
 export interface IPost {
   title: string;
   user: string;
-  date: Date;
+  date: string;
   id: number;
 }
 
