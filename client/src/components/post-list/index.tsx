@@ -23,6 +23,7 @@ class PostList extends Component {
     this.history = useHistory();
   }
 
+  // TODO: 빈 처리
   public markup(): string {
     const { postList } = this.state;
     return (
@@ -32,17 +33,16 @@ class PostList extends Component {
           <div class="user">유저</div>
           <div class="date">작성일</div>
         </li>
-        {postList.map(({ title, user, date, id }) => {
-          return (
-            <li key={id} class="post-item">
-              <a class="title" href={`/post/${id}`}>
-                {title}
-              </a>
-              <div class="user">{user}</div>
-              <div class="date">{parseTime(date)}</div>
-            </li>
-          );
-        })}
+
+        {postList.map(({ title, user, date, id }) => (
+          <li key={id} class="post-item">
+            <a class="title" href={`/post/${id}`}>
+              {title}
+            </a>
+            <div class="user">{user}</div>
+            <div class="date">{parseTime(date)}</div>
+          </li>
+        ))}
       </ul>
     );
   }
@@ -52,9 +52,12 @@ class PostList extends Component {
     const { searchType, searchContent } = query;
     const pageId = query.pageId || 1;
     if (pathname === '/search') {
-      postStore.subscribe(() =>
-        this.setState({ postList: postStore.getCashSearchPostList(searchType, searchContent, pageId) }),
-      );
+      // TODO: else 처리?
+      if (searchType && searchContent) {
+        postStore.subscribe(() =>
+          this.setState({ postList: postStore.getCashSearchPostList(searchType, searchContent, pageId) }),
+        );
+      }
       postStore.getSearchPostList(searchType, searchContent, pageId);
     } else {
       postStore.subscribe(() => this.setState({ postList: postStore.getCashPostList(pageId) }));

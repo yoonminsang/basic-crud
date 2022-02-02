@@ -11,14 +11,14 @@ class PostListPage extends Component {
     return (
       <div class="wrapper">
         <header class="header" component />
-        <content class="content" component />
+        <content class="content-postlist" component />
       </div>
     );
   }
 
   public appendComponent(target: HTMLElement): void {
     const $header = target.querySelector('.header') as HTMLElement;
-    const $postList = target.querySelector('.content') as HTMLElement;
+    const $postList = target.querySelector('.content-postlist') as HTMLElement;
     new Header($header);
     new PostList($postList);
   }
