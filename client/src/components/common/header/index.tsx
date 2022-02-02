@@ -6,7 +6,11 @@ import './style.css';
 
 class Header extends Component {
   public markup(): string {
-    return <h1>BASIC CRUD</h1>;
+    return (
+      <h1>
+        <a href="/">BASIC CRUD</a>
+      </h1>
+    );
   }
 }
 
