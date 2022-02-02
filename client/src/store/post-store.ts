@@ -84,8 +84,8 @@ class PostStore extends LocalStore {
     const { postNumber, isDescending } = this.state;
     try {
       const key = this.getPostListKey(pageId);
-      const state = this.getLocalStorage(POST_LIST_KEY, {}) as IState;
-      if (!state[POST_LIST_KEY]?.[key]) {
+      const postList = this.getLocalStorage(POST_LIST_KEY, {}) as TPostList;
+      if (!postList[key]) {
         const { postList } = await getPostList(pageId, postNumber, isDescending);
         this.setLocalStorage<TPostList>(POST_LIST_KEY, { ...this.state.postList, [key]: postList });
       }
@@ -98,8 +98,8 @@ class PostStore extends LocalStore {
     try {
       const { postNumber, isDescending } = this.state;
       const key = this.getSearchPostListKey(searchType, searchContent, pageId);
-      const state = this.getLocalStorage(SEARCH_POST_LIST_KEY, {}) as IState;
-      if (!state[SEARCH_POST_LIST_KEY]?.[key]) {
+      const searchPostList = this.getLocalStorage(SEARCH_POST_LIST_KEY, {}) as TPostList;
+      if (!searchPostList[key]) {
         const { postList } = await getSearchPostList(searchType, searchContent, pageId, postNumber, isDescending);
         this.setLocalStorage<TPostList>(SEARCH_POST_LIST_KEY, { ...this.state.postList, [key]: postList });
       }
@@ -111,10 +111,10 @@ class PostStore extends LocalStore {
   public async getPost(postId: number) {
     try {
       const key = postId;
-      const state = this.getLocalStorage(POST_KEY, {}) as IState;
-      if (!state[POST_KEY]?.[key]) {
+      const post = this.getLocalStorage(POST_KEY, {}) as TPost;
+      if (!post[key]) {
         const { post } = await getPost(postId);
-        this.setLocalStorage<TPost>(POST_KEY, { [key]: post });
+        this.setLocalStorage<TPost>(POST_KEY, { ...this.state.post, [key]: post });
       }
     } catch (err) {
       console.error(err);
