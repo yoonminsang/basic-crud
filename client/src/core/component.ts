@@ -186,11 +186,18 @@ abstract class Component {
   public setEvent() {}
 
   public addDelegation(eventType: keyof DocumentEventMap, selector: string, callback: (e?: Event) => void) {
+    const fn = (e?: Event) => callback(e);
+    this.target.removeEventListener(eventType, fn);
     this.target.addEventListener(eventType, (e) => {
       if ((e.target as HTMLElement).closest(selector)) {
-        callback(e);
+        fn(e);
       }
     });
+    // this.target.addEventListener(eventType, (e) => {
+    //   if ((e.target as HTMLElement).closest(selector)) {
+    //     callback(e);
+    //   }
+    // });
   }
 
   public addEvent(eventType: keyof DocumentEventMap, eventTarget: HTMLElement, callback: () => void) {
