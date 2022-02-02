@@ -77,7 +77,13 @@ abstract class Component {
 
   private updateElement(parent: HTMLElement, newNode: ChildNode, oldNode: ChildNode) {
     // 하위 컴포넌트는 하위 컴포넌트에서 비교(component라는 attribute가 있으면 비교하지 않는다)
-    if (newNode instanceof HTMLElement && newNode.getAttribute('component')) return;
+    if (
+      oldNode instanceof HTMLElement &&
+      oldNode.getAttribute('component') &&
+      newNode instanceof HTMLElement &&
+      newNode.getAttribute('component')
+    )
+      return;
 
     // oldNode만 존재하면 remove, newNode만 존재하면 append
     if (!newNode && oldNode) return parent.removeChild(oldNode);
