@@ -66,14 +66,18 @@ class PostStore extends LocalStore {
     return key;
   }
 
+  public getCashPost(postId: number) {
+    return this.state.post[postId];
+  }
+
   public getCashPostList(pageId: number) {
     const key = this.getPostListKey(pageId);
-    return this.state.postList[key];
+    return this.state.postList[key] || [];
   }
 
   public getCashSearchPostList(searchType: TSearchType, searchContent: string, pageId: number) {
     const key = this.getSearchPostListKey(searchType, searchContent, pageId);
-    return this.state.searchPostList[key];
+    return this.state.searchPostList[key] || [];
   }
 
   public async getPostList(pageId: number) {
@@ -108,7 +112,7 @@ class PostStore extends LocalStore {
     try {
       const key = postId;
       const state = this.getLocalStorage(POST_KEY, {}) as IState;
-      if (!state[POST_KEY][key]) {
+      if (!state[POST_KEY]?.[key]) {
         const { post } = await getPost(postId);
         this.setLocalStorage<TPost>(POST_KEY, { [key]: post });
       }
