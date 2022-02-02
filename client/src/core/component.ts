@@ -81,7 +81,9 @@ abstract class Component {
       oldNode instanceof HTMLElement &&
       oldNode.getAttribute('component') &&
       newNode instanceof HTMLElement &&
-      newNode.getAttribute('component')
+      newNode.getAttribute('component') &&
+      oldNode.attributes === newNode.attributes &&
+      oldNode.nodeName === newNode.nodeName
     )
       return;
 
