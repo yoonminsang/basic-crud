@@ -3,24 +3,19 @@ import request from './request';
 
 export type TSearchType = 'user' | 'title' | 'content';
 
-export const getPostList = (pageId: number, postNumber: number, isDescending: boolean) =>
-  request<IPostListData>(
-    'GET',
-    `/api/post?pageId=${pageId}&postNumber=${postNumber}&isDescending=${Number(isDescending)}`,
-  );
+export const getPostList = (pageId: number, postNumber: number, isDescending: number) =>
+  request<IPostListData>('GET', `/api/post?pageId=${pageId}&postNumber=${postNumber}&isDescending=${isDescending}`);
 
 export const getSearchPostList = (
   searchType: TSearchType,
   searchContent: string,
   pageId: number,
   postNumber: number,
-  isDescending: boolean,
+  isDescending: number,
 ) =>
   request<IPostListData>(
     'GET',
-    `/api/post/search/${searchType}/${searchContent}?pageId=${pageId}&postNumber=${postNumber}&isDescending=${Number(
-      isDescending,
-    )}`,
+    `/api/post/search/?searchType=${searchType}&searchContent=${searchContent}&pageId=${pageId}&postNumber=${postNumber}&isDescending=${isDescending}`,
   );
 
 export const getPost = (postId: number) => request<IPostDetailData>('GET', `/api/post/${postId}`);
