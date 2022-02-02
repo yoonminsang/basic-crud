@@ -32,7 +32,10 @@ class PostService {
     searchType: TSearchType,
     searchContent: string,
   ) {
-    const postList = postRepository.readSearchPostList(pageId, postNumber, isDescending, searchType, searchContent);
+    const postList =
+      searchType === 'user'
+        ? postRepository.readSearchPostList(pageId, postNumber, isDescending, searchContent)
+        : postRepository.readSearchPostListByReg(pageId, postNumber, isDescending, searchType, searchContent);
     return postList;
   }
 

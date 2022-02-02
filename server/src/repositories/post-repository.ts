@@ -1,6 +1,4 @@
 import connect from '@/config/db-config';
-import { COMMON_ERROR } from '@/constants/error';
-import CustomError from '@/error/custom-error';
 import { TSearchType } from '@/types';
 
 export interface IPost {
@@ -53,7 +51,16 @@ class PostRepository {
     return filterPostList;
   }
 
-  public readSearchPostList(
+  public readSearchPostList(pageId: number, postNumber: number, isDescending: number, user: string): IPost[] {
+    const allPostList = this.allPostList();
+    const postListByData = allPostList.filter((post) => post.user === user);
+    const postList = postListByData.slice(postNumber * (pageId - 1), postNumber * pageId);
+    // eslint-disable-next-line no-shadow
+    const filterPostList = this.filterPostList(postList, isDescending);
+    return filterPostList;
+  }
+
+  public readSearchPostListByReg(
     pageId: number,
     postNumber: number,
     isDescending: number,
