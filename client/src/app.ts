@@ -17,12 +17,11 @@ class App {
     this.loaderTarget = loaderTarget;
     this.routes = [
       { path: '/', component: PostListPage },
-      { path: '/:pageId', component: PostListPage },
-      { path: '/post/:postId', component: PostPage },
       { path: '/post/write', component: PostWritePage },
       { path: '/post/modify/:postId', component: PostWritePage },
-      { path: '/post/search/:searchType/:searchContent', component: PostListPage },
-      { path: '/post/search/:searchType/:searchContent/:pageId', component: PostListPage },
+      { path: '/post/search', component: PostListPage },
+      { path: '/post/:postId', component: PostPage },
+      { path: '/:pageId', component: PostListPage },
     ];
     this.NotFoundPage = NotFoundPage;
     this.init();
