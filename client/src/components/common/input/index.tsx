@@ -9,7 +9,7 @@ interface IProps {
   value?: string;
   placeholder?: string;
   maxlength?: number;
-  required?: string;
+  class?: string;
 }
 
 class Input extends Component {
@@ -18,7 +18,7 @@ class Input extends Component {
   }
 
   public markup(): string {
-    const { type, value, placeholder, maxlength, required } = this.props;
+    const { type, value, placeholder, maxlength } = this.props;
     return (
       <input
         class="input"
@@ -26,7 +26,7 @@ class Input extends Component {
         value={value}
         placeholder={placeholder}
         maxlength={maxlength}
-        required={required}
+        required
       />
     );
   }
