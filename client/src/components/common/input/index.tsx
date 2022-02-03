@@ -10,6 +10,7 @@ interface IProps {
   placeholder?: string;
   maxlength?: number;
   class?: string;
+  readonly?: boolean;
 }
 
 class Input extends Component {
@@ -18,8 +19,18 @@ class Input extends Component {
   }
 
   public markup(): string {
-    const { type, value, placeholder, maxlength } = this.props;
-    return <input class="input" type={type || 'text'} value={value} placeholder={placeholder} maxlength={maxlength} />;
+    const { type, value, placeholder, maxlength, readonly } = this.props;
+    console.log('readonly', readonly, !!readonly, value);
+    return (
+      <input
+        class="input"
+        type={type || 'text'}
+        value={value}
+        placeholder={placeholder}
+        maxlength={maxlength}
+        // readOnly={!!readonly}
+      />
+    );
   }
 }
 
