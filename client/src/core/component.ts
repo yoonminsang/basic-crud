@@ -3,6 +3,9 @@ import { IJsx } from './jsx';
 
 type TState = Record<string, any>;
 type THash = Record<string, ChildNode>;
+type TEventObj = Record<string, { eventType: keyof DocumentEventMap; callback: (e: Event) => void }[]>;
+
+const eventObj: TEventObj = {};
 
 abstract class Component {
   target: HTMLElement;
@@ -17,6 +20,7 @@ abstract class Component {
     requestAnimationFrame(() => {
       this.render();
       this.componentDidMount();
+      this.removeDelegation();
       this.setDelegation();
     });
   }
@@ -37,7 +41,18 @@ abstract class Component {
 
     this.appendComponent(target);
 
+    if (this.props.class) this.addClass();
+
     requestAnimationFrame(() => this.setEvent());
+  }
+
+  private addClass() {
+    const firstElement = this.target.firstElementChild as HTMLElement;
+    if (!firstElement) return;
+    const classArr: string[] = this.props.class.split(' ');
+    classArr.forEach((className) => {
+      firstElement.classList.add(className);
+    });
   }
 
   private createElement(node: IJsx | string) {
@@ -75,6 +90,16 @@ abstract class Component {
     return element;
   }
 
+  private checkAttributes(oldNode: HTMLElement, newNode: HTMLElement) {
+    const oldAttributes = [...oldNode.attributes];
+    const newAttributes = [...newNode.attributes];
+    if (oldAttributes.length !== newAttributes.length) return false;
+    for (let i = 0; i < oldAttributes.length; i++) {
+      if (newNode.getAttribute(oldAttributes[i].name) !== oldNode.getAttribute(newAttributes[i].name)) return false;
+    }
+    return true;
+  }
+
   private updateElement(parent: HTMLElement, newNode: ChildNode, oldNode: ChildNode) {
     // 하위 컴포넌트는 하위 컴포넌트에서 비교(component라는 attribute가 있으면 비교하지 않는다)
     if (
@@ -82,10 +107,14 @@ abstract class Component {
       oldNode.getAttribute('component') &&
       newNode instanceof HTMLElement &&
       newNode.getAttribute('component') &&
-      oldNode.attributes === newNode.attributes &&
+      this.checkAttributes(oldNode, newNode) &&
       oldNode.nodeName === newNode.nodeName
     )
       return;
+
+    // paret가 component attribute를 가지고 있고 newNode가 없다면 아직 appendComponent가 실행되지 않은 경우이다.
+    // appendComponent를 실행한 후에 update한다.
+    if (parent.getAttribute('component') && !newNode) return;
 
     // oldNode만 존재하면 remove, newNode만 존재하면 append
     if (!newNode && oldNode) return parent.removeChild(oldNode);
@@ -155,7 +184,7 @@ abstract class Component {
       else changeArr.push(newElement);
     });
 
-    oldNode.firstElementChild!.replaceWith(...changeArr);
+    oldNode.replaceChildren(...changeArr);
   }
 
   private changeAttributes(oldNode: HTMLElement, newNode: HTMLElement) {
@@ -179,25 +208,30 @@ abstract class Component {
     return '';
   }
 
+  private removeDelegation() {
+    const key = this.constructor.name;
+    if (eventObj[key]) {
+      eventObj[key].forEach(({ eventType, callback }) => {
+        this.target.removeEventListener(eventType, callback);
+      });
+      eventObj[key] = [];
+    }
+  }
+
   // addDelegation을 넣는 메서드
   public setDelegation() {}
 
   // addEvent를 넣는 메서드
   public setEvent() {}
 
-  public addDelegation(eventType: keyof DocumentEventMap, selector: string, callback: (e?: Event) => void) {
-    const fn = (e?: Event) => callback(e);
-    this.target.removeEventListener(eventType, fn);
-    this.target.addEventListener(eventType, (e) => {
-      if ((e.target as HTMLElement).closest(selector)) {
-        fn(e);
-      }
-    });
-    // this.target.addEventListener(eventType, (e) => {
-    //   if ((e.target as HTMLElement).closest(selector)) {
-    //     callback(e);
-    //   }
-    // });
+  public addDelegation(eventType: keyof DocumentEventMap, selector: string, callback: (e: Event) => void) {
+    const curry = (e: Event) => {
+      if ((e.target as HTMLElement).closest(selector)) callback(e);
+    };
+    const key = this.constructor.name;
+    if (eventObj[key]) eventObj[key].push({ eventType, callback: curry });
+    else eventObj[key] = [{ eventType, callback: curry }];
+    this.target.addEventListener(eventType, curry);
   }
 
   public addEvent(eventType: keyof DocumentEventMap, eventTarget: HTMLElement, callback: () => void) {
