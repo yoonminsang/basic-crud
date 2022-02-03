@@ -2,6 +2,7 @@ import Router from './core/router';
 import { ClassContructor, IRoute } from './core/types';
 import NotFoundPage from './pages/not-found-page';
 import PostListPage from './pages/post-list-page';
+import PostModifyPage from './pages/post-modify-page';
 import PostPage from './pages/post-page';
 import PostWritePage from './pages/post-write-page';
 import postStore from './store/post-store';
@@ -19,7 +20,7 @@ class App {
     this.routes = [
       { path: '/', component: PostListPage },
       { path: '/write', component: PostWritePage },
-      { path: '/modify/:postId', component: PostWritePage },
+      { path: '/modify/:postId', component: PostModifyPage },
       { path: '/search', component: PostListPage },
       { path: '/:postId', component: PostPage },
     ];

@@ -9,23 +9,31 @@ import Button from '../common/button';
 import postStore from '@/store/post-store';
 import { useHistory } from '@/core/routerHooks';
 import { IRouterState } from '@/core/types';
-import { createValidation } from '@/utils/validation/post-validation';
+import { createValidation, updateValidation } from '@/utils/validation/post-validation';
 
 interface IState {
+  id: number;
   title: string;
   user: string;
   content: string;
 }
 
+interface IProps {
+  modify: boolean;
+}
+
 class PostWrite extends Component {
   state: IState;
+  props: IProps;
   history: IRouterState;
 
-  constructor(target: HTMLElement) {
-    super(target);
-    this.state = { title: '', user: '', content: '' };
+  constructor(target: HTMLElement, props: IProps) {
+    super(target, props);
+    this.state = { id: 0, title: '', user: '', content: '' };
+    this.props = props;
     this.history = useHistory();
     this.createHanlder = this.createHanlder.bind(this);
+    this.updateHandler = this.updateHandler.bind(this);
   }
 
   public markup(): string {
@@ -48,9 +56,36 @@ class PostWrite extends Component {
     const $textarea = target.querySelector('.textarea-container') as HTMLElement;
     const $button = target.querySelector('.button-container') as HTMLElement;
     new Input($inputTitle, { type: 'text', value: title, placeholder: '제목', class: 'js-title' });
-    new Input($inputUser, { type: 'text', value: user, placeholder: '닉네임', class: 'js-user' });
+    new Input($inputUser, {
+      type: 'text',
+      value: user,
+      placeholder: '닉네임',
+      class: 'js-user',
+      readonly: this.props.modify,
+    });
     new TextArea($textarea, { value: content, placeholder: '내용을 입력하세요', class: 'js-textarea' });
     new Button($button, { type: 'submit', text: '저장' });
+  }
+
+  public async componentDidMount() {
+    if (this.props.modify) {
+      try {
+        const {
+          params: { postId },
+        } = this.history;
+        await postStore.getPost(postId);
+        postStore.subscribe(() => this.subscribeFn(postId));
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+
+  private subscribeFn(postId: number) {
+    const post = postStore.getCashPost(postId);
+    if (!post) return;
+    const { id, title, user, content } = post;
+    this.setState({ id, title, user, content });
   }
 
   public setDelegation(): void {
@@ -63,7 +98,8 @@ class PostWrite extends Component {
     this.addDelegation('input', '.js-textarea', (e) => {
       this.setState({ content: (e.target as HTMLInputElement).value });
     });
-    this.addDelegation('submit', '.post-write-wrapper', this.createHanlder);
+    if (this.props.modify) this.addDelegation('submit', '.post-write-wrapper', this.updateHandler);
+    else this.addDelegation('submit', '.post-write-wrapper', this.createHanlder);
   }
 
   private async createHanlder(e: Event) {
@@ -78,6 +114,23 @@ class PostWrite extends Component {
       }
       const postId = await postStore.createPost(title, content, user);
       this.history.push(`/${postId}`);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  private async updateHandler(e: Event) {
+    try {
+      e.preventDefault();
+      const { title, content, id } = this.state;
+      const validation = updateValidation(title);
+      if (validation !== true) {
+        // TODO: throw만 하고 catch문에서 모달처리(request함수에서 하는 로딩처리포함)
+        alert(validation);
+        throw Error(validation);
+      }
+      await postStore.updatePost(id, title, content);
+      this.history.push(`/${id}`);
     } catch (err) {
       console.error(err);
     }

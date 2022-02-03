@@ -6,7 +6,7 @@ import PostWrite from '@/components/post-write';
 import Header from '@/components/common/header';
 import './post-write-page.css';
 
-class PostWritePage extends Component {
+class PostModifyPage extends Component {
   public markup(): string {
     return (
       <div class="wrapper">
@@ -20,8 +20,8 @@ class PostWritePage extends Component {
     const $header = target.querySelector('.header') as HTMLElement;
     const $write = target.querySelector('.content-post-write') as HTMLElement;
     new Header($header);
-    new PostWrite($write, { modify: false });
+    new PostWrite($write, { modify: true });
   }
 }
 
-export default PostWritePage;
+export default PostModifyPage;
