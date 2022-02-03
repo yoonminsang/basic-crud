@@ -12,8 +12,11 @@ interface IProps {
 }
 
 class TextArea extends Component {
+  props: IProps;
+
   constructor(target: HTMLElement, props: IProps) {
     super(target, props);
+    this.props = props;
   }
 
   public markup(): string {

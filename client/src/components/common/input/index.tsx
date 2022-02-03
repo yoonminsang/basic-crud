@@ -14,8 +14,11 @@ interface IProps {
 }
 
 class Input extends Component {
+  props: IProps;
+
   constructor(target: HTMLElement, props: IProps) {
     super(target, props);
+    this.props = props;
   }
 
   public markup(): string {
