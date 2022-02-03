@@ -8,6 +8,7 @@ interface IProps {
   href?: string;
   type?: string;
   text: string;
+  class?: string;
 }
 
 class Button extends Component {
