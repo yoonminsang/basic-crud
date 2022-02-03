@@ -3,10 +3,6 @@ import PostController from '@/controllers/post-controller';
 import createPostValidation from '@/validation/post/create-post-validation';
 import paramsIdValidation from '@/validation/post/params-id-validation';
 import updatePostValidation from '@/validation/post/update-post-validation';
-// TODO: 제거
-// import readPostListValidation from '@/validation/post/read-post-list-validation';
-// import paramsUserValidation from '@/validation/post/params-user-validation';
-// import paramsTitleValidation from '@/validation/post/params-title-validation';
 
 const postRouter = Router();
 

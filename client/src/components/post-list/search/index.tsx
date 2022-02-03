@@ -15,7 +15,7 @@ const getSearchType = (searchType: TSearchType) => {
 };
 
 interface IState {
-  input: string;
+  searchContent: string;
   searchType: TSearchType;
   dropdown: boolean;
 }
@@ -26,12 +26,11 @@ class Search extends Component {
 
   constructor(target: HTMLElement) {
     super(target);
-    this.state = { input: '', searchType: 'title', dropdown: false };
+    this.state = { searchContent: '', searchType: 'title', dropdown: false };
     this.onSearchHandler = this.onSearchHandler.bind(this);
     this.history = useHistory();
   }
 
-  // TODO: 드롭다운
   public markup(): string {
     const searchTypes: TSearchType[] = ['title', 'content', 'user'];
     return (
@@ -56,7 +55,7 @@ class Search extends Component {
     const $input = target.querySelector('.input-container') as HTMLElement;
     const $dropdownButton = target.querySelector('.btn-dropdown-container') as HTMLElement;
     const $button = target.querySelector('.btn-container') as HTMLElement;
-    new Input($input, { type: 'text', value: this.state.input, placeholder: '검색할 내용을 입력하세요' });
+    new Input($input, { type: 'text', value: this.state.searchContent, placeholder: '검색할 내용을 입력하세요' });
     new Button($dropdownButton, {
       type: 'button',
       text: getSearchType(this.state.searchType),
@@ -67,7 +66,7 @@ class Search extends Component {
 
   public setDelegation(): void {
     this.addDelegation('input', '.input-container', (e: Event) => {
-      this.setState({ input: (e.target as HTMLInputElement).value });
+      this.setState({ searchContent: (e.target as HTMLInputElement).value });
     });
     this.addDelegation('click', '.js-dropdown', () => {
       this.setState({ dropdown: !this.state.dropdown });
@@ -81,8 +80,8 @@ class Search extends Component {
 
   private onSearchHandler(e: Event) {
     e.preventDefault();
-    const { searchType, input } = this.state;
-    this.history.push(`/post/search?searchType=${searchType}&searchContent=${input}`);
+    const { searchType, searchContent } = this.state;
+    this.history.push(`/post/search?searchType=${searchType}&searchContent=${searchContent}`);
   }
 }
 
