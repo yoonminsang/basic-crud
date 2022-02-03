@@ -11,7 +11,7 @@ const updatePostValidation = (req: Request, _res: Response, next: NextFunction):
       'string.max': JOI_ERROR.exceedMaxLengthTitle,
       'any.required': JOI_ERROR.fillTitle,
     }),
-    content: Joi.string(),
+    content: Joi.string().allow(''),
   });
 
   const validationResult = schema.validate(req.body);
