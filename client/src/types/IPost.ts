@@ -20,3 +20,6 @@ export interface IPostListData {
 export interface ICreatePostData {
   postId: string;
 }
+
+// export type TSearchType = '제목' | '내용' | '닉네임';
+export type TSearchType = 'title' | 'content' | 'user';
