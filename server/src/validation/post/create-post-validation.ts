@@ -11,10 +11,11 @@ const createPostValidation = (req: Request, _res: Response, next: NextFunction):
       'string.max': JOI_ERROR.exceedMaxLengthTitle,
       'any.required': JOI_ERROR.fillTitle,
     }),
-    content: Joi.string(),
+    content: Joi.string().allow(''),
     user: Joi.string().max(POST_ENTITY.userMaxLength).min(POST_ENTITY.userMinLength).required().empty('').messages({
       'string.max': JOI_ERROR.exceedMaxLengthUser,
       'string.min': JOI_ERROR.underMinLengthUser,
+      'any.required': JOI_ERROR.fillUser,
     }),
   });
 
