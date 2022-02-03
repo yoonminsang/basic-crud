@@ -95,12 +95,24 @@ abstract class Component {
     const newAttributes = [...newNode.attributes];
     if (oldAttributes.length !== newAttributes.length) return false;
     for (let i = 0; i < oldAttributes.length; i++) {
+      // console.log(newNode.getAttribute(oldAttributes[i].name), oldNode.getAttribute(newAttributes[i].name));
       if (newNode.getAttribute(oldAttributes[i].name) !== oldNode.getAttribute(newAttributes[i].name)) return false;
     }
     return true;
   }
 
   private updateElement(parent: HTMLElement, newNode: ChildNode, oldNode: ChildNode) {
+    // TODO: 주석제거
+    // console.log('update', parent, newNode, oldNode);
+    // console.log(
+    //   oldNode instanceof HTMLElement &&
+    //     oldNode.getAttribute('component') &&
+    //     newNode instanceof HTMLElement &&
+    //     newNode.getAttribute('component') &&
+    //     this.checkAttributes(oldNode, newNode) &&
+    //     oldNode.nodeName === newNode.nodeName,
+    // );
+    // console.log(parent.getAttribute('component') && !newNode && parent.childElementCount === 0);
     // 하위 컴포넌트는 하위 컴포넌트에서 비교(component라는 attribute가 있으면 비교하지 않는다)
     if (
       oldNode instanceof HTMLElement &&
@@ -114,7 +126,7 @@ abstract class Component {
 
     // paret가 component attribute를 가지고 있고 newNode가 없다면 아직 appendComponent가 실행되지 않은 경우이다.
     // appendComponent를 실행한 후에 update한다.
-    if (parent.getAttribute('component') && !newNode) return;
+    if (parent.getAttribute('component') && !newNode && parent.childElementCount === 0) return;
 
     // oldNode만 존재하면 remove, newNode만 존재하면 append
     if (!newNode && oldNode) return parent.removeChild(oldNode);
@@ -255,9 +267,7 @@ abstract class Component {
   private checkNeedUpdate(changeState: TState) {
     // eslint-disable-next-line no-restricted-syntax
     for (const key in changeState) {
-      if (!Object.is(changeState[key], this.state[key])) {
-        return true;
-      }
+      if (!Object.is(changeState[key], this.state[key])) return true;
     }
     return false;
   }
