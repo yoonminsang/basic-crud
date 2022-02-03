@@ -19,16 +19,7 @@ class Input extends Component {
 
   public markup(): string {
     const { type, value, placeholder, maxlength } = this.props;
-    return (
-      <input
-        class="input"
-        type={type || 'text'}
-        value={value}
-        placeholder={placeholder}
-        maxlength={maxlength}
-        required
-      />
-    );
+    return <input class="input" type={type || 'text'} value={value} placeholder={placeholder} maxlength={maxlength} />;
   }
 }
 

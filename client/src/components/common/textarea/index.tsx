@@ -19,7 +19,7 @@ class TextArea extends Component {
   public markup(): string {
     const { value, placeholder, maxlength } = this.props;
     return (
-      <textarea class="textarea" placeholder={placeholder || ''} maxlength={maxlength || ''} required>
+      <textarea class="textarea" placeholder={placeholder || ''} maxlength={maxlength || ''}>
         {value}
       </textarea>
     );
