@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 type TState = Record<string, any>;
 
 export interface IJsx {
@@ -7,11 +8,9 @@ export interface IJsx {
 }
 
 function jsx(type: string, props: TState, ...children: IJsx[]): IJsx {
-  // eslint-disable-next-line no-restricted-syntax
-  for (const key in props) {
-    // eslint-disable-next-line no-param-reassign
-    if (!props[key]) props[key] = '';
-  }
+  Object.keys(props).forEach((key) => {
+    if (props[key] === false) delete props[key];
+  });
   return { type, props, children: children.flat() };
 }
 
