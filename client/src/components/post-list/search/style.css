@@ -23,7 +23,7 @@
 .dropdown.blind {
   user-select: none;
   pointer-events: none;
-  opacity: 0;
+  display: none;
 }
 
 .dropdown {

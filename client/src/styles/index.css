@@ -22,8 +22,8 @@ body {
   align-items: center;
 }
 
-.right {
-  margin-left: auto;
+.flex {
+  display: flex;
 }
 
 .almost-full-width {
@@ -31,10 +31,6 @@ body {
 }
 .full-width {
   width: 100%;
-}
-
-.blind {
-  display: none;
 }
 
 .img,
