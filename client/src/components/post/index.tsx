@@ -10,7 +10,7 @@ import postStore from '@/store/post-store';
 import { parseTime } from '@/utils/parser';
 
 interface IState {
-  post?: IPostDetail;
+  post?: IPostDetail | null;
 }
 
 class Post extends Component {
@@ -28,7 +28,9 @@ class Post extends Component {
   // TODO: 스타일
   public markup(): string {
     const { post } = this.state;
-    if (!post) return <div />;
+    // TODO: 스타일
+    if (post === undefined) return '';
+    if (post === null) return <div>글이 존재하지 않습니다</div>;
     const { date, content, title, user } = post;
     return (
       <div class="post-detail">

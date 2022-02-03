@@ -13,7 +13,7 @@ import {
 type TPostList = Record<string, IPost[]>;
 type TPost = Record<string, IPostDetail>;
 interface IState {
-  post: TPost;
+  post: TPost | null;
   postList: TPostList;
   searchPostList: TPostList;
   postNumber: number;
@@ -26,7 +26,7 @@ const POST_KEY = 'post';
 const POST_NUMBER = 'postNumber';
 const IS_DESCENDING = 'isDescending';
 
-const initialState = { post: {}, postList: {}, searchPostList: {}, postNumber: 30, isDescending: 1 };
+const initialState = { post: null, postList: {}, searchPostList: {}, postNumber: 30, isDescending: 1 };
 
 class PostStore extends LocalStore {
   state: IState;
@@ -67,7 +67,7 @@ class PostStore extends LocalStore {
   }
 
   public getCashPost(postId: number) {
-    return this.state.post[postId];
+    return this.state.post?.[postId] ?? null;
   }
 
   public getCashPostList(pageId: number) {
