@@ -9,9 +9,10 @@ import { useHistory } from '@/core/routerHooks';
 import { IRouterState } from '@/core/types';
 import { parseTime } from '@/utils/parser';
 import Search from './search';
+import Button from '../common/button';
 
 interface IState {
-  postList: IPost[];
+  postList: IPost[] | null;
 }
 
 class PostList extends Component {
@@ -20,20 +21,20 @@ class PostList extends Component {
 
   constructor(target: HTMLElement) {
     super(target);
-    this.state = { postList: [] };
+    this.state = { postList: null };
     this.history = useHistory();
   }
 
-  // TODO: 빈 처리
   public markup(): string {
     const { postList } = this.state;
     return (
-      <div>
-        {postList.length ? (
+      <div class="post-list-wrapper">
+        <div class="create-container" component />
+        {postList && postList.length ? (
           <ul class="post-list">
             <li class="post-title" key="0">
               <div class="title">제목</div>
-              <div class="user">유저</div>
+              <div class="user">닉네임</div>
               <div class="date">작성일</div>
             </li>
 
@@ -59,7 +60,9 @@ class PostList extends Component {
   }
 
   public appendComponent(target: HTMLElement): void {
+    const $button = target.querySelector('.create-container') as HTMLElement;
     const $search = target.querySelector('.content-search') as HTMLElement;
+    new Button($button, { text: '글쓰기', href: '/post/write' });
     new Search($search);
   }
 
