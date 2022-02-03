@@ -3,7 +3,12 @@
   display: flex;
   justify-content: center;
   position: relative;
-  align-items: flex-end;
+  width: 100%;
+}
+
+.input-container,
+.input-container .input {
+  width: 100%;
 }
 
 .btn-dropdown-container,
