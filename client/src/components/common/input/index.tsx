@@ -20,7 +20,6 @@ class Input extends Component {
 
   public markup(): string {
     const { type, value, placeholder, maxlength, readonly } = this.props;
-    console.log('readonly', readonly, !!readonly, value);
     return (
       <input
         class="input"
@@ -28,7 +27,7 @@ class Input extends Component {
         value={value}
         placeholder={placeholder}
         maxlength={maxlength}
-        // readOnly={!!readonly}
+        readOnly={readonly}
       />
     );
   }
