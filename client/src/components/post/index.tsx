@@ -28,7 +28,7 @@ class Post extends Component {
   // TODO: 스타일
   public markup(): string {
     const { post } = this.state;
-    if (!post) return '';
+    if (!post) return <div />;
     const { date, content, title, user } = post;
     return (
       <div class="post-detail">
@@ -51,8 +51,8 @@ class Post extends Component {
       const {
         params: { postId },
       } = this.history;
+      await postStore.getPost(postId);
       postStore.subscribe(() => this.setState({ post: postStore.getCashPost(postId) }));
-      postStore.getPost(postId);
     } catch (err) {
       console.error(err);
     }
@@ -67,7 +67,7 @@ class Post extends Component {
     const {
       params: { postId },
     } = this.history;
-    this.history.push(`/post/modify/${postId}`);
+    this.history.push(`/modify/${postId}`);
   }
 
   private async deleteHandler() {

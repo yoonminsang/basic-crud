@@ -81,7 +81,7 @@ class Search extends Component {
   private onSearchHandler(e: Event) {
     e.preventDefault();
     const { searchType, searchContent } = this.state;
-    this.history.push(`/post/search?searchType=${searchType}&searchContent=${searchContent}`);
+    this.history.push(`/search?searchType=${searchType}&searchContent=${searchContent}`);
   }
 }
 

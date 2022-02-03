@@ -31,6 +31,7 @@ class PostList extends Component {
     return (
       <div class="post-list-wrapper">
         <div class="create-container" component />
+        <div class="content-search" component />
         {postList && postList.length ? (
           <ul class="post-list">
             <li class="post-title" key="0">
@@ -41,10 +42,10 @@ class PostList extends Component {
 
             {postList.map(({ title, user, date, id }) => (
               <li key={id} class="post-item">
-                <a class="title" href={`/post/${id}`}>
+                <a class="title" href={`/${id}`}>
                   {title}
                 </a>
-                <a class="user" href={`/post/search?searchType=user&searchContent=${user}`}>
+                <a class="user" href={`/search?searchType=user&searchContent=${user}`}>
                   {user}
                 </a>
                 <div class="date">{parseTime(date)}</div>
@@ -55,7 +56,6 @@ class PostList extends Component {
           // TODO: 스타일
           <div>글 목록이 존재하지 않습니다</div>
         )}
-        <div class="content-search" component />
       </div>
     );
   }
@@ -64,7 +64,7 @@ class PostList extends Component {
     if (!this.state.postList) return;
     const $button = target.querySelector('.create-container') as HTMLElement;
     const $search = target.querySelector('.content-search') as HTMLElement;
-    new Button($button, { text: '글쓰기', href: '/post/write' });
+    new Button($button, { text: '글쓰기', href: '/write' });
     new Search($search);
   }
 
@@ -73,14 +73,14 @@ class PostList extends Component {
       const { pathname, query } = this.history;
       const { searchType, searchContent } = query;
       const pageId = query.pageId || 1;
-      if (pathname === '/post/search' && searchType && searchContent) {
+      if (pathname === '/search' && searchType && searchContent) {
+        await postStore.getSearchPostList(searchType, searchContent, pageId);
         postStore.subscribe(() =>
           this.setState({ postList: postStore.getCashSearchPostList(searchType, searchContent, pageId) }),
         );
-        await postStore.getSearchPostList(searchType, searchContent, pageId);
       } else {
-        postStore.subscribe(() => this.setState({ postList: postStore.getCashPostList(pageId) }));
         await postStore.getPostList(pageId);
+        postStore.subscribe(() => this.setState({ postList: postStore.getCashPostList(pageId) }));
       }
     } catch (err) {
       console.error(err);
