@@ -102,6 +102,7 @@ abstract class Component {
   }
 
   private updateElement(parent: HTMLElement, newNode: ChildNode, oldNode: ChildNode) {
+    // debugger;
     // TODO: 주석제거
     // console.log('update', parent, newNode, oldNode);
     // console.log(

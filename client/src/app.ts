@@ -4,6 +4,7 @@ import NotFoundPage from './pages/not-found-page';
 import PostListPage from './pages/post-list-page';
 import PostPage from './pages/post-page';
 import PostWritePage from './pages/post-write-page';
+import postStore from './store/post-store';
 import { addLoader } from './utils/loader';
 
 class App {
@@ -17,11 +18,10 @@ class App {
     this.loaderTarget = loaderTarget;
     this.routes = [
       { path: '/', component: PostListPage },
-      { path: '/post/write', component: PostWritePage },
-      { path: '/post/modify/:postId', component: PostWritePage },
-      { path: '/post/search', component: PostListPage },
-      { path: '/post/:postId', component: PostPage },
-      { path: '/:pageId', component: PostListPage },
+      { path: '/write', component: PostWritePage },
+      { path: '/modify/:postId', component: PostWritePage },
+      { path: '/search', component: PostListPage },
+      { path: '/:postId', component: PostPage },
     ];
     this.NotFoundPage = NotFoundPage;
     this.init();
@@ -33,7 +33,7 @@ class App {
   }
 
   render() {
-    new Router(this.target, this.routes, this.NotFoundPage);
+    new Router(this.target, this.routes, this.NotFoundPage, [postStore]);
   }
 }
 

@@ -1,9 +1,5 @@
 type TParams = Record<string, string>;
 
-const getPathname = () => {
-  return window.location.pathname;
-};
-
 const getQuery = () => {
   const { search } = window.location;
   const queries = new URLSearchParams(search);
@@ -29,4 +25,4 @@ const pathValidation = (currentPath: string[], routePath: string[]) => {
   return params;
 };
 
-export { getPathname, getQuery, pathValidation };
+export { getQuery, pathValidation };

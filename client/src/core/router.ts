@@ -1,18 +1,21 @@
+import Observable from './basic-observable';
 import routerContext, { RouterContext } from './router-context';
 import { ClassContructor, IRoute } from './types';
-import { getPathname, getQuery, pathValidation } from './utils';
+import { getQuery, pathValidation } from './utils';
 
 class Router {
   target: HTMLElement;
   routes: IRoute[];
   NotFoundPage: ClassContructor;
   routerContext: RouterContext;
+  stores: Observable[];
 
-  constructor(target: HTMLElement, routes: IRoute[], NotFoundPage: ClassContructor) {
+  constructor(target: HTMLElement, routes: IRoute[], NotFoundPage: ClassContructor, stores: Observable[]) {
     this.target = target;
     this.routes = routes;
     this.NotFoundPage = NotFoundPage;
     this.routerContext = routerContext;
+    this.stores = stores;
     this.push = this.push.bind(this);
     this.goBack = this.goBack.bind(this);
     this.set();
@@ -23,7 +26,7 @@ class Router {
 
   private set() {
     routerContext.setState({
-      pathname: getPathname(),
+      pathname: window.location.pathname,
       query: getQuery(),
       push: (url: string) => this.push(url),
       goBack: () => this.goBack(),
@@ -31,12 +34,17 @@ class Router {
   }
 
   private route() {
-    const currentPath = getPathname().slice(1).split('/');
+    const currentPath = window.location.pathname.slice(1).split('/');
     for (let i = 0; i < this.routes.length; i++) {
       const routePath = this.routes[i].path.slice(1).split('/');
       const params = pathValidation(currentPath, routePath);
       if (!params) continue;
       routerContext.setState({ params });
+
+      this.stores.forEach((store) => {
+        store.unsubscribeAll();
+      });
+
       const Page = this.routes[i].component;
       new Page(this.target);
       return;
@@ -59,12 +67,13 @@ class Router {
 
   private addBackChangeHandler() {
     window.addEventListener('popstate', () => {
-      routerContext.setState({ pathname: getPathname(), query: getQuery() });
+      routerContext.setState({ pathname: window.location.pathname, query: getQuery() });
       this.route();
     });
   }
 
   private push(url: string) {
+    if (url === window.location.pathname + window.location.search) return;
     const [pathname] = url.split('?');
     window.history.pushState(null, '', url);
     routerContext.setState({ pathname, query: getQuery() });

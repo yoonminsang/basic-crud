@@ -19,16 +19,15 @@ abstract class Observable {
   }
 
   private checkNeedUpdate(changeState: TState) {
-    Object.keys(changeState).forEach((key) => {
-      if (!Object.is(changeState[key], this.state[key])) {
-        return true;
-      }
-    });
+    // eslint-disable-next-line no-restricted-syntax
+    for (const key in changeState) {
+      if (!Object.is(changeState[key], this.state[key])) return true;
+    }
     return false;
   }
 
   public subscribe(observer: Function) {
-    observer();
+    // observer();
     this.observers.push(observer);
   }
 
