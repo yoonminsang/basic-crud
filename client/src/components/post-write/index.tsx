@@ -77,7 +77,7 @@ class PostWrite extends Component {
         throw Error(validation);
       }
       const postId = await postStore.createPost(title, content, user);
-      this.history.push(`/post/${postId}`);
+      this.history.push(`/${postId}`);
     } catch (err) {
       console.error(err);
     }
