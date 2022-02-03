@@ -82,71 +82,47 @@ class PostStore extends LocalStore {
 
   public async getPostList(pageId: number) {
     const { postNumber, isDescending } = this.state;
-    try {
-      const key = this.getPostListKey(pageId);
-      const postList = this.getLocalStorage(POST_LIST_KEY, {}) as TPostList;
-      if (!postList[key]) {
-        const { postList } = await getPostList(pageId, postNumber, isDescending);
-        this.setLocalStorage<TPostList>(POST_LIST_KEY, { ...this.state.postList, [key]: postList });
-      }
-    } catch (err) {
-      console.error(err);
+    const key = this.getPostListKey(pageId);
+    const postList = this.getLocalStorage(POST_LIST_KEY, {}) as TPostList;
+    if (!postList[key]) {
+      const { postList } = await getPostList(pageId, postNumber, isDescending);
+      this.setLocalStorage<TPostList>(POST_LIST_KEY, { ...this.state.postList, [key]: postList });
     }
   }
 
   public async getSearchPostList(searchType: TSearchType, searchContent: string, pageId: number) {
-    try {
-      const { postNumber, isDescending } = this.state;
-      const key = this.getSearchPostListKey(searchType, searchContent, pageId);
-      const searchPostList = this.getLocalStorage(SEARCH_POST_LIST_KEY, {}) as TPostList;
-      if (!searchPostList[key]) {
-        const { postList } = await getSearchPostList(searchType, searchContent, pageId, postNumber, isDescending);
-        this.setLocalStorage<TPostList>(SEARCH_POST_LIST_KEY, { ...this.state.postList, [key]: postList });
-      }
-    } catch (err) {
-      console.error(err);
+    const { postNumber, isDescending } = this.state;
+    const key = this.getSearchPostListKey(searchType, searchContent, pageId);
+    const searchPostList = this.getLocalStorage(SEARCH_POST_LIST_KEY, {}) as TPostList;
+    if (!searchPostList[key]) {
+      const { postList } = await getSearchPostList(searchType, searchContent, pageId, postNumber, isDescending);
+      this.setLocalStorage<TPostList>(SEARCH_POST_LIST_KEY, { ...this.state.postList, [key]: postList });
     }
   }
 
   public async getPost(postId: number) {
-    try {
-      const key = postId;
-      const post = this.getLocalStorage(POST_KEY, {}) as TPost;
-      if (!post[key]) {
-        const { post } = await getPost(postId);
-        this.setLocalStorage<TPost>(POST_KEY, { ...this.state.post, [key]: post });
-      }
-    } catch (err) {
-      console.error(err);
+    const key = postId;
+    const post = this.getLocalStorage(POST_KEY, {}) as TPost;
+    if (!post[key]) {
+      const { post } = await getPost(postId);
+      this.setLocalStorage<TPost>(POST_KEY, { ...this.state.post, [key]: post });
     }
   }
 
   public async createPost(title: string, content: string, user: string) {
-    try {
-      const { postId } = await createPost(title, content, user);
-      this.initCash();
-      return postId;
-    } catch (err) {
-      console.error(err);
-    }
+    const { postId } = await createPost(title, content, user);
+    this.initCash();
+    return postId;
   }
 
   public async updatePost(postId: number, title: string, content: string) {
-    try {
-      await updatePost(postId, title, content);
-      this.initCash();
-    } catch (err) {
-      console.error(err);
-    }
+    await updatePost(postId, title, content);
+    this.initCash();
   }
 
   public async deletePost(postId: number) {
-    try {
-      await deletePost(postId);
-      this.initCash();
-    } catch (err) {
-      console.error(err);
-    }
+    await deletePost(postId);
+    this.initCash();
   }
 
   private initCash() {

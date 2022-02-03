@@ -28,7 +28,7 @@ class Post extends Component {
   // TODO: 스타일
   public markup(): string {
     const { post } = this.state;
-    if (!post) return <div>글이 존재하지 않습니다</div>;
+    if (!post) return '';
     const { date, content, title, user } = post;
     return (
       <div class="post-detail">
@@ -47,11 +47,15 @@ class Post extends Component {
   }
 
   public async componentDidMount() {
-    const {
-      params: { postId },
-    } = this.history;
-    postStore.subscribe(() => this.setState({ post: postStore.getCashPost(postId) }));
-    postStore.getPost(postId);
+    try {
+      const {
+        params: { postId },
+      } = this.history;
+      postStore.subscribe(() => this.setState({ post: postStore.getCashPost(postId) }));
+      postStore.getPost(postId);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   public setDelegation(): void {
@@ -67,13 +71,17 @@ class Post extends Component {
   }
 
   private async deleteHandler() {
-    const {
-      params: { postId },
-    } = this.history;
-    await postStore.deletePost(postId);
-    // TODO: 모달로 교체, 진짜삭제할거니 prompt?
-    alert('삭제 완료');
-    this.history.push('/');
+    try {
+      const {
+        params: { postId },
+      } = this.history;
+      await postStore.deletePost(postId);
+      // TODO: 모달로 교체, 진짜삭제할거니 prompt?
+      alert('삭제 완료');
+      this.history.push('/');
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
 

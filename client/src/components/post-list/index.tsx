@@ -12,7 +12,7 @@ import Search from './search';
 import Button from '../common/button';
 
 interface IState {
-  postList: IPost[] | null;
+  postList?: IPost[];
 }
 
 class PostList extends Component {
@@ -21,12 +21,13 @@ class PostList extends Component {
 
   constructor(target: HTMLElement) {
     super(target);
-    this.state = { postList: null };
+    this.state = { postList: undefined };
     this.history = useHistory();
   }
 
   public markup(): string {
     const { postList } = this.state;
+    if (!postList) return '';
     return (
       <div class="post-list-wrapper">
         <div class="create-container" component />
@@ -60,6 +61,7 @@ class PostList extends Component {
   }
 
   public appendComponent(target: HTMLElement): void {
+    if (!this.state.postList) return;
     const $button = target.querySelector('.create-container') as HTMLElement;
     const $search = target.querySelector('.content-search') as HTMLElement;
     new Button($button, { text: '글쓰기', href: '/post/write' });
@@ -67,17 +69,21 @@ class PostList extends Component {
   }
 
   public async componentDidMount() {
-    const { pathname, query } = this.history;
-    const { searchType, searchContent } = query;
-    const pageId = query.pageId || 1;
-    if (pathname === '/post/search' && searchType && searchContent) {
-      postStore.subscribe(() =>
-        this.setState({ postList: postStore.getCashSearchPostList(searchType, searchContent, pageId) }),
-      );
-      postStore.getSearchPostList(searchType, searchContent, pageId);
-    } else {
-      postStore.subscribe(() => this.setState({ postList: postStore.getCashPostList(pageId) }));
-      postStore.getPostList(pageId);
+    try {
+      const { pathname, query } = this.history;
+      const { searchType, searchContent } = query;
+      const pageId = query.pageId || 1;
+      if (pathname === '/post/search' && searchType && searchContent) {
+        postStore.subscribe(() =>
+          this.setState({ postList: postStore.getCashSearchPostList(searchType, searchContent, pageId) }),
+        );
+        await postStore.getSearchPostList(searchType, searchContent, pageId);
+      } else {
+        postStore.subscribe(() => this.setState({ postList: postStore.getCashPostList(pageId) }));
+        await postStore.getPostList(pageId);
+      }
+    } catch (err) {
+      console.error(err);
     }
   }
 }
