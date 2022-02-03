@@ -8,9 +8,11 @@ export interface IJsx {
 }
 
 function jsx(type: string, props: TState, ...children: IJsx[]): IJsx {
-  Object.keys(props).forEach((key) => {
-    if (props[key] === false) delete props[key];
-  });
+  if (props) {
+    Object.keys(props).forEach((key) => {
+      if (props[key] === false || props[key] === undefined) delete props[key];
+    });
+  }
   return { type, props, children: children.flat() };
 }
 
