@@ -39,7 +39,7 @@ class PostListHeader extends Component {
 
   public markup(): string {
     return (
-      <div style="display:flex">
+      <div class="flex">
         <div class="dropdown-post-number-container" component></div>
         <div class="dropdown-descending-container" component></div>
         <div class="create-container" component />
