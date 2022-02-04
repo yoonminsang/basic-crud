@@ -33,30 +33,31 @@ class PostRepository {
     return post;
   }
 
-  private filterPostList(postList: IPost[], isDescending: number): IPost[] {
+  private filterPostList(postList: IPost[]): IPost[] {
     const filterPostList = postList.map(({ id, title, user, date }) => ({
       id,
       title,
       user,
       date,
     }));
-    if (isDescending) filterPostList.reverse();
     return filterPostList;
   }
 
   public readPostList(pageId: number, postNumber: number, isDescending: number): IPost[] {
     const allPostList = this.allPostList();
+    if (isDescending) allPostList.reverse();
     const postList = allPostList.slice(postNumber * (pageId - 1), postNumber * pageId);
-    const filterPostList = this.filterPostList(postList, isDescending);
+    const filterPostList = this.filterPostList(postList);
     return filterPostList;
   }
 
   public readSearchPostList(pageId: number, postNumber: number, isDescending: number, user: string): IPost[] {
     const allPostList = this.allPostList();
+    if (isDescending) allPostList.reverse();
     const postListByData = allPostList.filter((post) => post.user === user);
     const postList = postListByData.slice(postNumber * (pageId - 1), postNumber * pageId);
     // eslint-disable-next-line no-shadow
-    const filterPostList = this.filterPostList(postList, isDescending);
+    const filterPostList = this.filterPostList(postList);
     return filterPostList;
   }
 
@@ -68,11 +69,12 @@ class PostRepository {
     searchContent: string,
   ): IPost[] {
     const allPostList = this.allPostList();
+    if (isDescending) allPostList.reverse();
     const regex = RegExp(searchContent, 'gi');
     const postListByData = allPostList.filter((post) => post[searchType].match(regex));
     const postList = postListByData.slice(postNumber * (pageId - 1), postNumber * pageId);
     // eslint-disable-next-line no-shadow
-    const filterPostList = this.filterPostList(postList, isDescending);
+    const filterPostList = this.filterPostList(postList);
     return filterPostList;
   }
 
