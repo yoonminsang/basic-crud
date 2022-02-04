@@ -5,8 +5,18 @@ const myFormat = format.printf(({ level, message, timestamp }) => {
   return `${timestamp} ${level}: ${message}`;
 });
 
-const errorDir = process.env.NODE_ENV === 'production' ? '../../logs/error' : 'logs/error';
-const infoDir = process.env.NODE_ENV === 'production' ? '../../logs' : 'logs';
+let [errorDir, infoDir] = ['../../logs/error', '../../logs'];
+switch (process.env.NODE_ENV) {
+  case 'development':
+    [errorDir, infoDir] = ['logs/dev/error', 'logs/dev'];
+    break;
+  case 'test':
+    [errorDir, infoDir] = ['logs/test/error', 'logs/test'];
+    break;
+  default:
+    console.error('check NODE_ENV');
+    break;
+}
 
 const logger = createLogger({
   level: 'info',
