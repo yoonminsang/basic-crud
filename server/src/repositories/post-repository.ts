@@ -101,7 +101,7 @@ class PostRepository {
   ): IPostList {
     const allPostList = this.allPostList();
     if (isDescending) allPostList.reverse();
-    const postListByData = allPostList.filter((post) => post.user === searchContent);
+    const postListByData = allPostList.filter((post) => post[searchType] === searchContent);
     const pageCount = Math.ceil(postListByData.length / postNumber);
     const slicePostList = postListByData.slice(postNumber * (pageId - 1), postNumber * pageId);
     const postList = this.filterPostList(slicePostList);

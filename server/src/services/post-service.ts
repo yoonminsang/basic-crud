@@ -3,6 +3,7 @@ import CustomError from '@/error/custom-error';
 import PostRepository from '@/repositories/post-repository';
 import { TSearchType } from '@/types';
 
+const searchesByNotReg = ['user'];
 const postRepository = new PostRepository();
 
 class PostService {
@@ -32,7 +33,7 @@ class PostService {
     searchType: TSearchType,
     searchContent: string,
   ) {
-    const { postList, pageCount } = ['user'].includes(searchType)
+    const { postList, pageCount } = searchesByNotReg.includes(searchType)
       ? postRepository.readSearchPostList(pageId, postNumber, isDescending, searchType, searchContent)
       : postRepository.readSearchPostListByReg(pageId, postNumber, isDescending, searchType, searchContent);
     return { postList, pageCount };
