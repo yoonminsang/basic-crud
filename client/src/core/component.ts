@@ -66,10 +66,13 @@ abstract class Component {
     // element를 만듦
     const element = ['svg', 'circle'].includes(type)
       ? document.createElementNS('http://www.w3.org/2000/svg', type)
+      : type === 'frag'
+      ? document.createDocumentFragment()
       : document.createElement(type);
 
     // props가 있는 경우에 attribute를 추가
-    if (props) {
+    const isFrag = element instanceof DocumentFragment;
+    if (props && !isFrag) {
       Object.entries(props).forEach(([name, value]) => {
         element.setAttribute(name, value);
       });
@@ -95,25 +98,12 @@ abstract class Component {
     const newAttributes = [...newNode.attributes];
     if (oldAttributes.length !== newAttributes.length) return false;
     for (let i = 0; i < oldAttributes.length; i++) {
-      // console.log(newNode.getAttribute(oldAttributes[i].name), oldNode.getAttribute(newAttributes[i].name));
       if (newNode.getAttribute(oldAttributes[i].name) !== oldNode.getAttribute(newAttributes[i].name)) return false;
     }
     return true;
   }
 
   private updateElement(parent: HTMLElement, newNode: ChildNode, oldNode: ChildNode) {
-    // debugger;
-    // TODO: 주석제거
-    // console.log('update', parent, newNode, oldNode);
-    // console.log(
-    //   oldNode instanceof HTMLElement &&
-    //     oldNode.getAttribute('component') &&
-    //     newNode instanceof HTMLElement &&
-    //     newNode.getAttribute('component') &&
-    //     this.checkAttributes(oldNode, newNode) &&
-    //     oldNode.nodeName === newNode.nodeName,
-    // );
-    // console.log(parent.getAttribute('component') && !newNode && parent.childElementCount === 0);
     // 하위 컴포넌트는 하위 컴포넌트에서 비교(component라는 attribute가 있으면 비교하지 않는다)
     if (
       oldNode instanceof HTMLElement &&
@@ -143,8 +133,6 @@ abstract class Component {
     // html tag가 바뀔경우 전체를 replace
     if (newNode.nodeName !== oldNode.nodeName) {
       // const index = [...parent.childNodes].indexOf(oldNode);
-      // oldNode.remove();
-      // parent.appendChild(newNode);
       parent.replaceChild(newNode, oldNode);
       return;
     }
@@ -248,6 +236,9 @@ abstract class Component {
   }
 
   public addEvent(eventType: keyof DocumentEventMap, eventTarget: HTMLElement, callback: () => void) {
+    const key = this.constructor.name;
+    if (eventObj[key]) eventObj[key].push({ eventType, callback });
+    else eventObj[key] = [{ eventType, callback }];
     eventTarget.removeEventListener(eventType, callback);
     eventTarget.addEventListener(eventType, callback);
   }
@@ -268,12 +259,14 @@ abstract class Component {
   private checkNeedUpdate(changeState: TState) {
     // eslint-disable-next-line no-restricted-syntax
     for (const key in changeState) {
+      // if (JSON.stringify(changeState[key]) !== JSON.stringify(this.state[key])) return true;
       if (!Object.is(changeState[key], this.state[key])) return true;
     }
     return false;
   }
 
-  public componentDidUpdate(_state: TState, _nextState: TState) {}
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public componentDidUpdate(state: TState, nextState: TState) {}
 }
 
 export default Component;
