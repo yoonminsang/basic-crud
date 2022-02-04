@@ -83,21 +83,22 @@ class PostStore extends LocalStore {
   public async getPostList(pageId: number) {
     const { postNumber, isDescending } = this.state;
     const key = this.getPostListKey(pageId);
-    const postList = this.getLocalStorage(POST_LIST_KEY, {}) as TPostList;
-    if (!postList[key]) {
-      const { postList } = await getPostList(pageId, postNumber, isDescending);
-      this.setLocalStorage<TPostList>(POST_LIST_KEY, { ...this.state.postList, [key]: postList });
-    }
+    const cashPostList = this.getLocalStorage(POST_LIST_KEY, {}) as TPostList;
+    if (cashPostList[key]) return cashPostList;
+
+    const { postList } = await getPostList(pageId, postNumber, isDescending);
+    this.setLocalStorage<TPostList>(POST_LIST_KEY, { ...this.state.postList, [key]: postList });
   }
 
   public async getSearchPostList(searchType: TSearchType, searchContent: string, pageId: number) {
     const { postNumber, isDescending } = this.state;
     const key = this.getSearchPostListKey(searchType, searchContent, pageId);
-    const searchPostList = this.getLocalStorage(SEARCH_POST_LIST_KEY, {}) as TPostList;
-    if (!searchPostList[key]) {
-      const { postList } = await getSearchPostList(searchType, searchContent, pageId, postNumber, isDescending);
-      this.setLocalStorage<TPostList>(SEARCH_POST_LIST_KEY, { ...this.state.postList, [key]: postList });
-    }
+    const cashPostList = this.getLocalStorage(SEARCH_POST_LIST_KEY, {}) as TPostList;
+    if (cashPostList[key]) return cashPostList;
+
+    const { postList } = await getSearchPostList(searchType, searchContent, pageId, postNumber, isDescending);
+    this.setLocalStorage<TPostList>(SEARCH_POST_LIST_KEY, { ...this.state.postList, [key]: postList });
+    return postList;
   }
 
   public async getPost(postId: number) {
