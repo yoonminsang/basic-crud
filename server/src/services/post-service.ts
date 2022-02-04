@@ -21,8 +21,8 @@ class PostService {
   }
 
   public readPostList(pageId: number, postNumber: number, isDescending: number) {
-    const postList = postRepository.readPostList(pageId, postNumber, isDescending);
-    return postList;
+    const { postList, pageCount } = postRepository.readPostList(pageId, postNumber, isDescending);
+    return { postList, pageCount };
   }
 
   public readSearchPostList(
@@ -32,11 +32,11 @@ class PostService {
     searchType: TSearchType,
     searchContent: string,
   ) {
-    const postList =
+    const { postList, pageCount } =
       searchType === 'user'
         ? postRepository.readSearchPostList(pageId, postNumber, isDescending, searchContent)
         : postRepository.readSearchPostListByReg(pageId, postNumber, isDescending, searchType, searchContent);
-    return postList;
+    return { postList, pageCount };
   }
 
   public updatePost(id: number, title: string, content: string) {

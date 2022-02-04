@@ -12,6 +12,11 @@ export interface IPostDetail extends IPost {
   content: string;
 }
 
+interface IPostList {
+  postList: IPost[];
+  pageCount: number;
+}
+
 // TODO: db try catch
 class PostRepository {
   private allPostList(): IPostDetail[] {
@@ -43,22 +48,23 @@ class PostRepository {
     return filterPostList;
   }
 
-  public readPostList(pageId: number, postNumber: number, isDescending: number): IPost[] {
+  public readPostList(pageId: number, postNumber: number, isDescending: number): IPostList {
     const allPostList = this.allPostList();
     if (isDescending) allPostList.reverse();
-    const postList = allPostList.slice(postNumber * (pageId - 1), postNumber * pageId);
-    const filterPostList = this.filterPostList(postList);
-    return filterPostList;
+    const pageCount = Math.ceil(allPostList.length / postNumber);
+    const slicePostList = allPostList.slice(postNumber * (pageId - 1), postNumber * pageId);
+    const postList = this.filterPostList(slicePostList);
+    return { postList, pageCount };
   }
 
-  public readSearchPostList(pageId: number, postNumber: number, isDescending: number, user: string): IPost[] {
+  public readSearchPostList(pageId: number, postNumber: number, isDescending: number, user: string): IPostList {
     const allPostList = this.allPostList();
     if (isDescending) allPostList.reverse();
     const postListByData = allPostList.filter((post) => post.user === user);
-    const postList = postListByData.slice(postNumber * (pageId - 1), postNumber * pageId);
-    // eslint-disable-next-line no-shadow
-    const filterPostList = this.filterPostList(postList);
-    return filterPostList;
+    const pageCount = Math.ceil(postListByData.length / postNumber);
+    const slicePostList = postListByData.slice(postNumber * (pageId - 1), postNumber * pageId);
+    const postList = this.filterPostList(slicePostList);
+    return { postList, pageCount };
   }
 
   public readSearchPostListByReg(
@@ -67,15 +73,15 @@ class PostRepository {
     isDescending: number,
     searchType: TSearchType,
     searchContent: string,
-  ): IPost[] {
+  ): IPostList {
     const allPostList = this.allPostList();
     if (isDescending) allPostList.reverse();
     const regex = RegExp(searchContent, 'gi');
     const postListByData = allPostList.filter((post) => post[searchType].match(regex));
-    const postList = postListByData.slice(postNumber * (pageId - 1), postNumber * pageId);
-    // eslint-disable-next-line no-shadow
-    const filterPostList = this.filterPostList(postList);
-    return filterPostList;
+    const pageCount = Math.ceil(postListByData.length / postNumber);
+    const slicePostList = postListByData.slice(postNumber * (pageId - 1), postNumber * pageId);
+    const postList = this.filterPostList(slicePostList);
+    return { postList, pageCount };
   }
 
   public updatePost(id: number, title: string, content: string): void {

@@ -10,8 +10,8 @@ interface ICreatePost {
 
 interface IPostList {
   pageId: number;
-  postNumber: number;
-  isDescending: number;
+  postNumber: string;
+  isDescending: string;
 }
 
 interface ISearchPostList extends IPostList {
@@ -52,8 +52,8 @@ class PostController {
   public readPostList(req: Request, res: Response, next: NextFunction) {
     try {
       const { pageId, postNumber, isDescending } = req.query as unknown as IPostList;
-      const postList = service.readPostList(pageId, postNumber, +isDescending);
-      res.status(200).json({ postList });
+      const { postList, pageCount } = service.readPostList(pageId, +postNumber, +isDescending);
+      res.status(200).json({ postList, pageCount });
     } catch (err) {
       next(err);
     }
@@ -62,8 +62,14 @@ class PostController {
   public readSearchPostList(req: Request, res: Response, next: NextFunction) {
     try {
       const { searchType, searchContent, pageId, postNumber, isDescending } = req.query as unknown as ISearchPostList;
-      const postList = service.readSearchPostList(pageId, postNumber, +isDescending, searchType, searchContent);
-      res.status(200).json({ postList });
+      const { postList, pageCount } = service.readSearchPostList(
+        pageId,
+        +postNumber,
+        +isDescending,
+        searchType,
+        searchContent,
+      );
+      res.status(200).json({ postList, pageCount });
     } catch (err) {
       next(err);
     }
