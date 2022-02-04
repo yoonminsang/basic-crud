@@ -44,15 +44,15 @@ html {
   overflow-y: scroll;
 }
 html::-webkit-scrollbar {
-  width: 6px;
-  background-color: var(--lightGrey);
+  width: 10px;
+  background-color: #eee;
 }
 html::-webkit-scrollbar-track {
-  background-color: var(--lightGrey);
+  background-color: #eee;
 }
 html::-webkit-scrollbar-thumb {
   border-radius: 3px;
-  background-color: var(--darkGrey);
+  background-color: #c1c1c1;
 }
 html::-webkit-scrollbar-button {
   width: 0;
