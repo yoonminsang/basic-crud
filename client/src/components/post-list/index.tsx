@@ -9,10 +9,12 @@ import { useHistory } from '@/core/routerHooks';
 import { IRouterState } from '@/core/types';
 import { parseTime } from '@/utils/parser';
 import Search from './search';
-import Button from '../common/button';
+import PostListHeader from './post-list-header';
 
 interface IState {
   postList?: IPost[];
+  postNumber: number;
+  isDescending: number;
 }
 
 class PostList extends Component {
@@ -21,7 +23,7 @@ class PostList extends Component {
 
   constructor(target: HTMLElement) {
     super(target);
-    this.state = { postList: undefined };
+    this.state = { postList: undefined, postNumber: 30, isDescending: 1 };
     this.history = useHistory();
   }
 
@@ -30,7 +32,7 @@ class PostList extends Component {
     if (!postList) return '';
     return (
       <div class="post-list-wrapper">
-        <div class="create-container" component />
+        <div class="post-list-header-container" component />
         <div class="content-search" component />
         {postList && postList.length ? (
           <ul class="post-list">
@@ -61,10 +63,11 @@ class PostList extends Component {
   }
 
   public appendComponent(target: HTMLElement): void {
-    if (!this.state.postList) return;
-    const $button = target.querySelector('.create-container') as HTMLElement;
+    const { postList, postNumber, isDescending } = this.state;
+    if (!postList) return;
+    const $header = target.querySelector('.post-list-header-container') as HTMLElement;
     const $search = target.querySelector('.content-search') as HTMLElement;
-    new Button($button, { text: '글쓰기', href: '/write' });
+    new PostListHeader($header, { postNumber, isDescending });
     new Search($search);
   }
 
@@ -80,10 +83,29 @@ class PostList extends Component {
         );
       } else {
         await postStore.getPostList(pageId);
-        postStore.subscribe(() => this.setState({ postList: postStore.getCashPostList(pageId) }));
+        postStore.subscribe(() =>
+          this.setState({
+            postList: postStore.getCashPostList(pageId),
+            isDescending: postStore.state.isDescending,
+            postNumber: postStore.state.postNumber,
+          }),
+        );
       }
     } catch (err) {
       console.error(err);
+    }
+  }
+
+  public async componentDidUpdate(state: IState, nextState: IState) {
+    const { pathname, query } = this.history;
+    const { searchType, searchContent } = query;
+    const pageId = query.pageId || 1;
+    if (state.isDescending !== nextState.isDescending || state.postNumber !== nextState.postNumber) {
+      if (pathname === '/search' && searchType && searchContent) {
+        await postStore.getSearchPostList(searchType, searchContent, pageId);
+      } else {
+        await postStore.getPostList(pageId);
+      }
     }
   }
 }
