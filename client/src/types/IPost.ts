@@ -15,6 +15,7 @@ export interface IPostDetailData {
 
 export interface IPostListData {
   postList: IPost[];
+  pageCount: number;
 }
 
 export interface ICreatePostData {

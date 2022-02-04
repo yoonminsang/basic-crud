@@ -1,5 +1,5 @@
 import LocalStore from '@/core/local-store';
-import { IPost, IPostDetail } from '@/types/IPost';
+import { IPostDetail, IPostListData } from '@/types/IPost';
 import {
   getPostList,
   getSearchPostList,
@@ -10,7 +10,7 @@ import {
   TSearchType,
 } from '@/utils/api/post';
 
-type TPostList = Record<string, IPost[]>;
+type TPostList = Record<string, IPostListData>;
 type TPost = Record<string, IPostDetail>;
 interface IState {
   post: TPost | null;
@@ -86,8 +86,8 @@ class PostStore extends LocalStore {
     const cashPostList = this.getLocalStorage(POST_LIST_KEY, {}) as TPostList;
     if (cashPostList[key]) return cashPostList;
 
-    const { postList } = await getPostList(pageId, postNumber, isDescending);
-    this.setLocalStorage<TPostList>(POST_LIST_KEY, { ...this.state.postList, [key]: postList });
+    const { postList, pageCount } = await getPostList(pageId, postNumber, isDescending);
+    this.setLocalStorage<TPostList>(POST_LIST_KEY, { ...this.state.postList, [key]: { postList, pageCount } });
   }
 
   public async getSearchPostList(searchType: TSearchType, searchContent: string, pageId: number) {
@@ -96,8 +96,17 @@ class PostStore extends LocalStore {
     const cashPostList = this.getLocalStorage(SEARCH_POST_LIST_KEY, {}) as TPostList;
     if (cashPostList[key]) return cashPostList;
 
-    const { postList } = await getSearchPostList(searchType, searchContent, pageId, postNumber, isDescending);
-    this.setLocalStorage<TPostList>(SEARCH_POST_LIST_KEY, { ...this.state.postList, [key]: postList });
+    const { postList, pageCount } = await getSearchPostList(
+      searchType,
+      searchContent,
+      pageId,
+      postNumber,
+      isDescending,
+    );
+    this.setLocalStorage<TPostList>(SEARCH_POST_LIST_KEY, {
+      ...this.state.postList,
+      [key]: { postList, pageCount },
+    });
     return postList;
   }
 
