@@ -13,7 +13,7 @@ import {
 type TPostList = Record<string, IPostListData>;
 type TPost = Record<string, IPostDetail>;
 interface IState {
-  post: TPost | null;
+  post: TPost;
   postList: TPostList;
   searchPostList: TPostList;
   postNumber: number;
@@ -21,12 +21,11 @@ interface IState {
 }
 
 const POST_LIST_KEY = 'postList';
-const SEARCH_POST_LIST_KEY = 'searchPostList';
 const POST_KEY = 'post';
 const POST_NUMBER = 'postNumber';
 const IS_DESCENDING = 'isDescending';
 
-const initialState = { post: null, postList: {}, searchPostList: {}, postNumber: 30, isDescending: 1 };
+const initialState = { post: {}, postList: {}, searchPostList: {}, postNumber: 30, isDescending: 1 };
 
 class PostStore extends LocalStore {
   state: IState;
@@ -40,7 +39,7 @@ class PostStore extends LocalStore {
   private init() {
     const post = this.getLocalStorage(POST_KEY, initialState.post) as IState;
     const postList = this.getLocalStorage(POST_LIST_KEY, initialState.postList) as IState;
-    const searchPostList = this.getLocalStorage(SEARCH_POST_LIST_KEY, initialState.searchPostList) as IState;
+    const searchPostList = {} as IState;
     const postNumber = this.getLocalStorage(POST_NUMBER, initialState.postNumber) as IState;
     const isDescending = this.getLocalStorage(IS_DESCENDING, initialState.isDescending) as IState;
     this.setState({ postList, searchPostList, post, postNumber, isDescending });
@@ -67,7 +66,7 @@ class PostStore extends LocalStore {
   }
 
   public getCashPost(postId: number) {
-    return this.state.post?.[postId] ?? null;
+    return this.state.post[postId] || null;
   }
 
   public getCashPostList(pageId: number) {
@@ -84,7 +83,7 @@ class PostStore extends LocalStore {
     const { postNumber, isDescending } = this.state;
     const key = this.getPostListKey(pageId);
     const cashPostList = this.getLocalStorage(POST_LIST_KEY, {}) as TPostList;
-    if (cashPostList[key]) return cashPostList;
+    if (cashPostList[key]) return;
 
     const { postList, pageCount } = await getPostList(pageId, postNumber, isDescending);
     this.setLocalStorage<TPostList>(POST_LIST_KEY, { ...this.state.postList, [key]: { postList, pageCount } });
@@ -93,8 +92,8 @@ class PostStore extends LocalStore {
   public async getSearchPostList(searchType: TSearchType, searchContent: string, pageId: number) {
     const { postNumber, isDescending } = this.state;
     const key = this.getSearchPostListKey(searchType, searchContent, pageId);
-    const cashPostList = this.getLocalStorage(SEARCH_POST_LIST_KEY, {}) as TPostList;
-    if (cashPostList[key]) return cashPostList;
+    const cashPostList = this.state.searchPostList;
+    if (cashPostList[key]) return;
 
     const { postList, pageCount } = await getSearchPostList(
       searchType,
@@ -103,10 +102,7 @@ class PostStore extends LocalStore {
       postNumber,
       isDescending,
     );
-    this.setLocalStorage<TPostList>(SEARCH_POST_LIST_KEY, {
-      ...this.state.postList,
-      [key]: { postList, pageCount },
-    });
+    this.setState({ searchPostList: { ...this.state.searchPostList, [key]: { postList, pageCount } } });
     return postList;
   }
 
@@ -138,7 +134,6 @@ class PostStore extends LocalStore {
   private initCash() {
     this.setLocalStorage(POST_KEY, initialState.post);
     this.setLocalStorage(POST_LIST_KEY, initialState.postList);
-    this.setLocalStorage(SEARCH_POST_LIST_KEY, initialState.searchPostList);
   }
 }
 
