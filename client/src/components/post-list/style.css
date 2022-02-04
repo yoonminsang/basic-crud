@@ -34,3 +34,9 @@
   font-size: 14px;
   margin-left: 10px;
 }
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin: 50px;
+}
