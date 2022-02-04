@@ -21,13 +21,14 @@ abstract class Observable {
   private checkNeedUpdate(changeState: TState) {
     // eslint-disable-next-line no-restricted-syntax
     for (const key in changeState) {
+      // if (JSON.stringify(changeState[key]) !== JSON.stringify(this.state[key])) return true;
       if (!Object.is(changeState[key], this.state[key])) return true;
     }
     return false;
   }
 
   public subscribe(observer: Function) {
-    // observer();
+    observer();
     this.observers.push(observer);
   }
 
