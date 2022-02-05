@@ -8,7 +8,6 @@ const postRepository = new PostRepository();
 
 class PostService {
   public createPost(title: string, content: string, user: string) {
-    // TODO: html 태그제거??
     const postId = postRepository.createPost(title, content, user);
     return postId;
   }

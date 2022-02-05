@@ -26,8 +26,6 @@ interface IUpdatePost {
 
 const service = new PostService();
 
-// TODO: 캐시 처리
-
 class PostController {
   public createPost(req: Request, res: Response, next: NextFunction) {
     const { title, content, user } = req.body as ICreatePost;

@@ -27,6 +27,7 @@ const IS_DESCENDING = 'isDescending';
 
 const initialState = { post: {}, postList: {}, searchPostList: {}, postNumber: 30, isDescending: 1 };
 
+// TODO: 테스트, 리덕스로 마이그레이션
 class PostStore extends LocalStore {
   state: IState;
 

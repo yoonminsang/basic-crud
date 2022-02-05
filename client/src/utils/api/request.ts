@@ -30,7 +30,6 @@ async function request<T>(method: Method, url: string, body?: unknown): Promise<
   } catch (err) {
     const { errorMessage } = err as IError;
     if (errorMessage) alert(errorMessage);
-    // else console.error(err);
     throw err;
   } finally {
     window.dispatchEvent(requestEndEvent);
