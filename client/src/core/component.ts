@@ -17,6 +17,7 @@ abstract class Component {
     this.target = target;
     this.props = props;
     this.state = {};
+    if (!target) return;
     requestAnimationFrame(() => {
       this.render();
       this.componentDidMount();
@@ -236,9 +237,6 @@ abstract class Component {
   }
 
   public addEvent(eventType: keyof DocumentEventMap, eventTarget: HTMLElement, callback: () => void) {
-    const key = this.constructor.name;
-    if (eventObj[key]) eventObj[key].push({ eventType, callback });
-    else eventObj[key] = [{ eventType, callback }];
     eventTarget.removeEventListener(eventType, callback);
     eventTarget.addEventListener(eventType, callback);
   }

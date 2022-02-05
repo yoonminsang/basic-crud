@@ -69,8 +69,7 @@ class PostList extends Component {
   }
 
   public appendComponent(target: HTMLElement): void {
-    const { postList, postNumber, isDescending, pageCount } = this.state;
-    if (!postList) return;
+    const { postNumber, isDescending, pageCount } = this.state;
     const $header = target.querySelector('.post-list-header-container') as HTMLElement;
     const $search = target.querySelector('.content-search') as HTMLElement;
     const $pagination = target.querySelector('.pagination-container') as HTMLElement;
