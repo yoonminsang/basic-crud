@@ -8,8 +8,8 @@
     "build": "webpack --config config/webpack.prod.js --progress",
     "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx --parser-options=project:'./tsconfig.json'",
     "test": "jest --config ./jest.config.js",
-    "test-clean": "jest --config ./jest.config.js --silent",
-    "test-coverage": "jest --config ./jest.config.js --coverage --silent"
+    "test:clean": "jest --config ./jest.config.js --silent",
+    "test:coverage": "jest --config ./jest.config.js --coverage --silent"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.0",
