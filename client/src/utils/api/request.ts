@@ -1,3 +1,5 @@
+import { IError } from '@/types/IError';
+
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 const requestEvent = new CustomEvent('request');
