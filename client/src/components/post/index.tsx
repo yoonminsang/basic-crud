@@ -74,11 +74,15 @@ class Post extends Component {
 
   private async deleteHandler() {
     try {
+      // TODO: 모달로 교체
+      if (!confirm('정말 삭제하시겠습니까?')) return;
+
       const {
         params: { postId },
       } = this.history;
       await postStore.deletePost(postId);
-      // TODO: 모달로 교체, 진짜삭제할거니 prompt?
+
+      // TODO: 모달로 교체
       alert('삭제 완료');
       this.history.push('/');
     } catch (err) {
