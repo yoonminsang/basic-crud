@@ -75,7 +75,7 @@ class Post extends Component {
   private async deleteHandler() {
     try {
       // TODO: 모달로 교체
-      if (!confirm('정말 삭제하시겠습니까?')) return;
+      if (!window.confirm('정말 삭제하시겠습니까?')) return;
 
       const {
         params: { postId },
