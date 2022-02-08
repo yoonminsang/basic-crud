@@ -31,7 +31,6 @@ class PostList extends Component {
 
   public markup(): string {
     const { postList } = this.state;
-    if (!postList) return '';
     return (
       <div class="post-list-wrapper">
         <div class="post-list-header-container" component />
