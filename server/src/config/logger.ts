@@ -1,17 +1,23 @@
 import { createLogger, format, transports } from 'winston';
 import WinstonDaily from 'winston-daily-rotate-file';
 
+const DEV = 'development';
+const TEST = 'test';
+const PRODUCTION = 'production';
+
 const myFormat = format.printf(({ level, message, timestamp }) => {
   return `${timestamp} ${level}: ${message}`;
 });
 
-let [errorDir, infoDir] = ['../../logs/error', '../../logs'];
+let [errorDir, infoDir] = ['logs/prod/error', 'logs/prod'];
 switch (process.env.NODE_ENV) {
-  case 'development':
+  case DEV:
     [errorDir, infoDir] = ['logs/dev/error', 'logs/dev'];
     break;
-  case 'test':
+  case TEST:
     [errorDir, infoDir] = ['logs/test/error', 'logs/test'];
+    break;
+  case PRODUCTION:
     break;
   default:
     console.error('check NODE_ENV');
@@ -48,7 +54,7 @@ const logger = createLogger({
   ],
 });
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== PRODUCTION) {
   logger.add(
     new transports.Console({
       format: format.combine(format.colorize(), format.simple()),
