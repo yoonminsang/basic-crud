@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "cross-env NODE_ENV=development tsc-watch --onSuccess \"ts-node --files -r tsconfig-paths/register dist/server.js\" ",
-    "prod:basic": "tsc && cross-env NODE_ENV=production ts-node --files -r tsconfig-paths/register dist/server.js - i max",
+    "prod:basic": "tsc && cross-env NODE_ENV=production ts-node --files -r tsconfig-paths/register dist/server.js",
     "prod": "tsc && cross-env NODE_ENV=production pm2 start --name api ts-node -- --files -r tsconfig-paths/register dist/server.js - i max",
     "lint": "eslint src --ext .ts --parser-options=project:'tsconfig.json'",
     "lint:fix": "eslint src --ext .ts --parser-options=project:'tsconfig.json' --fix",
