@@ -3,7 +3,10 @@ import { IJsx } from './jsx';
 
 type TState = Record<string, any>;
 type THash = Record<string, ChildNode>;
-type TEventObj = Record<string, { eventType: keyof DocumentEventMap; callback: (e: Event) => void }[]>;
+type TEventObj = Record<
+  string,
+  { target: HTMLElement; eventType: keyof DocumentEventMap; callback: (e: Event) => void }[]
+>;
 
 const eventObj: TEventObj = {};
 
@@ -43,8 +46,6 @@ abstract class Component {
     this.appendComponent(target);
 
     if (this.props.class) this.addClass();
-
-    requestAnimationFrame(() => this.setEvent());
   }
 
   private addClass() {
@@ -211,10 +212,10 @@ abstract class Component {
   }
 
   private removeDelegation() {
-    const key = this.constructor.name;
+    const key = this.getKey();
     if (eventObj[key]) {
-      eventObj[key].forEach(({ eventType, callback }) => {
-        this.target.removeEventListener(eventType, callback);
+      eventObj[key].forEach(({ target, eventType, callback }) => {
+        target.removeEventListener(eventType, callback);
       });
       eventObj[key] = [];
     }
@@ -230,15 +231,10 @@ abstract class Component {
     const curry = (e: Event) => {
       if ((e.target as HTMLElement).closest(selector)) callback(e);
     };
-    const key = this.constructor.name;
-    if (eventObj[key]) eventObj[key].push({ eventType, callback: curry });
-    else eventObj[key] = [{ eventType, callback: curry }];
+    const key = this.getKey();
+    if (eventObj[key]) eventObj[key].push({ target: this.target, eventType, callback: curry });
+    else eventObj[key] = [{ target: this.target, eventType, callback: curry }];
     this.target.addEventListener(eventType, curry);
-  }
-
-  public addEvent(eventType: keyof DocumentEventMap, eventTarget: HTMLElement, callback: () => void) {
-    eventTarget.removeEventListener(eventType, callback);
-    eventTarget.addEventListener(eventType, callback);
   }
 
   public componentDidMount() {}
@@ -252,6 +248,11 @@ abstract class Component {
       this.render();
       cb?.();
     });
+  }
+
+  private getKey() {
+    const key = this.constructor.name + this.target.classList[0];
+    return key;
   }
 
   private checkNeedUpdate(changeState: TState) {
