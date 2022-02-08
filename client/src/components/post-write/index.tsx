@@ -10,6 +10,7 @@ import postStore from '@/store/post-store';
 import { useHistory } from '@/core/routerHooks';
 import { IRouterState } from '@/core/types';
 import { createValidation, updateValidation } from '@/utils/validation/post-validation';
+import Innererror from '@/utils/inner-error';
 
 interface IState {
   id: number;
@@ -108,13 +109,12 @@ class PostWrite extends Component {
       const { title, user, content } = this.state;
       const validation = createValidation(title, user);
       if (validation !== true) {
-        // TODO: throw만 하고 catch문에서 모달처리(request함수에서 하는 로딩처리포함)
-        alert(validation);
-        throw Error(validation);
+        throw new Innererror(validation);
       }
       const postId = await postStore.createPost(title, content, user);
       this.history.push(`/${postId}`);
     } catch (err) {
+      if (err instanceof Innererror) alert(err.errorMessage);
       console.error(err);
     }
   }
@@ -125,13 +125,12 @@ class PostWrite extends Component {
       const { title, content, id } = this.state;
       const validation = updateValidation(title);
       if (validation !== true) {
-        // TODO: throw만 하고 catch문에서 모달처리(request함수에서 하는 로딩처리포함)
-        alert(validation);
-        throw Error(validation);
+        throw new Innererror(validation);
       }
       await postStore.updatePost(id, title, content);
       this.history.push(`/${id}`);
     } catch (err) {
+      if (err instanceof Innererror) alert(err.errorMessage);
       console.error(err);
     }
   }
