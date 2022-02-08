@@ -17,23 +17,16 @@ const getDescending = (descending: 1 | 0) => {
   return obj[descending];
 };
 
-interface IState {
-  postNumberDropdown: boolean;
-  descendingDropdown: boolean;
-}
-
 interface IProps {
   postNumber: number;
   isDescending: number;
 }
 
 class PostListHeader extends Component {
-  state: IState;
   props: IProps;
 
   constructor(target: HTMLElement, props: IProps) {
     super(target, props);
-    this.state = { postNumberDropdown: false, descendingDropdown: false };
     this.props = props;
   }
 
@@ -63,12 +56,6 @@ class PostListHeader extends Component {
       changeText: getDescending,
       selectedDropdown: this.props.isDescending,
       eventHandler: (descending: number) => postStore.setDescending(descending),
-    });
-  }
-
-  public setDelegation(): void {
-    this.addDelegation('click', '.js-dropdown-post-number', () => {
-      this.setState({ postNumberDropdown: !this.state.postNumberDropdown });
     });
   }
 }

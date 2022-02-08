@@ -12,16 +12,18 @@ interface IProps {
   eventHandler: (dropdown: any) => void;
 }
 
-let num = 0;
+interface IState {
+  isDropdown: boolean;
+}
 
 class Dropdown extends Component {
   props: IProps;
+  state: IState;
 
   constructor(target: HTMLElement, props: IProps) {
     super(target, props);
-    this.state = { isDropdown: false, class: `js-dropdown-${num}` };
+    this.state = { isDropdown: false };
     this.props = props;
-    num++;
   }
 
   public markup(): string {
@@ -46,12 +48,12 @@ class Dropdown extends Component {
     new Button($dropdownButton, {
       type: 'button',
       text: this.props.changeText(this.props.selectedDropdown),
-      class: `white ${this.state.class}`,
+      class: `white js-dropdown`,
     });
   }
 
   public setDelegation(): void {
-    this.addDelegation('click', `.${this.state.class}`, () => {
+    this.addDelegation('click', `.js-dropdown`, () => {
       this.setState({ isDropdown: !this.state.isDropdown });
     });
     this.addDelegation('click', '.js-search-type', (e: Event) => {

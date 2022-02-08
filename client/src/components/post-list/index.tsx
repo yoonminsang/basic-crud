@@ -34,7 +34,6 @@ class PostList extends Component {
     if (!postList) return '';
     return (
       <div class="post-list-wrapper">
-        {false}
         <div class="post-list-header-container" component />
         <div class="content-search" component />
         {postList && postList.length ? (
