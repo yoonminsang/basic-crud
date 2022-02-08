@@ -232,8 +232,9 @@ abstract class Component {
       if ((e.target as HTMLElement).closest(selector)) callback(e);
     };
     const key = this.getKey();
-    if (eventObj[key]) eventObj[key].push({ target: this.target, eventType, callback: curry });
-    else eventObj[key] = [{ target: this.target, eventType, callback: curry }];
+    const nextEventObj = { target: this.target, eventType, callback: curry };
+    if (eventObj[key]) eventObj[key].push(nextEventObj);
+    else eventObj[key] = [nextEventObj];
     this.target.addEventListener(eventType, curry);
   }
 
