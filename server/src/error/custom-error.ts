@@ -32,6 +32,8 @@ class CustomError extends Error {
     this.errorMessage = errorMessage;
     this.customMessage = customMessage;
     this.developerMessage = developerMessage;
+
+    Object.setPrototypeOf(this, CustomError.prototype);
   }
 }
 
