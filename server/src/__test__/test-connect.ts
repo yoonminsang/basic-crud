@@ -7,8 +7,9 @@ class TestConnect {
     try {
       fs.accessSync(dbPath);
       fs.unlinkSync(dbPath);
-      // eslint-disable-next-line no-empty
-    } catch (e) {}
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   public delete() {

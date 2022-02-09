@@ -79,7 +79,6 @@ const postEX = {
   user: '유저',
 };
 
-// TODO: validation 테스트는 시간 관계상 생략
 // TODO: 타입정리, 테스트 리팩토링
 describe('post router integration test', () => {
   describe('service error', () => {
