@@ -33,18 +33,21 @@ class Post extends Component {
     if (post === null) return <div>글이 존재하지 않습니다</div>;
     const { date, content, title, user } = post;
     return (
-      <div class="post-detail">
-        <div class="post-title">
-          <h2 class="title">{title}</h2>
-          <div class="post-option">
-            <div class="user">{user}</div>
-            <div class="time">{parseTime(date)}</div>
-            <button class="js-modify">수정</button>
-            <button class="js-delete">삭제</button>
+      <frag>
+        <div class="post-detail">
+          <div class="post-title">
+            <h2 class="title">{title}</h2>
+            <div class="post-option">
+              <div class="user">{user}</div>
+              <div class="time">{parseTime(date)}</div>
+              <button class="js-modify">수정</button>
+              <button class="js-delete">삭제</button>
+              <button class="js-back-list">목록</button>
+            </div>
           </div>
+          <div class="content">{content}</div>
         </div>
-        <div class="content">{content}</div>
-      </div>
+      </frag>
     );
   }
 
@@ -61,6 +64,9 @@ class Post extends Component {
   }
 
   public setDelegation(): void {
+    this.addDelegation('click', '.js-back-list', () => {
+      this.history.goBack();
+    });
     this.addDelegation('click', '.js-modify', this.modifyHandler);
     this.addDelegation('click', '.js-delete', this.deleteHandler);
   }
