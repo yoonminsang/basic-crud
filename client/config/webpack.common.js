@@ -51,8 +51,8 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/index.html',
-      // favicon: './src/favicon.png',
+      template: './public/index.html',
+      favicon: './public/favicon.png',
     }),
     new CompressionPlugin({
       threshold: 10240, // 10kb
