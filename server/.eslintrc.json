@@ -30,7 +30,8 @@
       {
         "argsIgnorePattern": "^_"
       }
-    ]
+    ],
+    "jest/no-conditional-expect": "off"
   },
   "ignorePatterns": ["jest.config.ts"]
 }
