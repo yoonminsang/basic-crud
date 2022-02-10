@@ -94,7 +94,14 @@ server
 
 ### 시작하기
 
-`server` 디렉토리의 .mock.env 파일을 참고해서 .env(.dev.env, .test.env) 파일을 생성해주세요
+- `server` 디렉토리의 .mock.env 파일을 참고해서 .env(.dev.env, .test.env) 파일을 생성해주세요(DB에 넣은 값을 이름으로 json 파일을 만듭니다. ex) DB=db => db.json)
+- yarn seed(:prod, :div)로 씨드 데이터를 생성할 수 있습니다.
+- 다음 명령어로 pm2 설치 후 yarn prod를 실행해야 합니다. 그렇지않다면 yarn prod:basic을 이용해 서버를 실행해주세요
+
+```
+yarn global add pm2
+pm2 install typescript`
+```
 
 #### 프론트
 
@@ -118,9 +125,13 @@ $ cd server && yarn prod or yarn prod:basic
 
 ### 추가해야 될 것들
 
+- 프론트 테스트(컴포넌트 렌더링 테스트, core 라이브러리 테스트)
 - 상태관리를 리덕스 형식으로 교체
-- db seed
-- 스타일
-- 테스트
 - core 리팩토링
 - 전체적인 리팩토링
+- 스타일
+
+![image](https://user-images.githubusercontent.com/57904979/153343674-d357b191-cd2a-4608-8397-b8aabb869a35.png)
+![image](https://user-images.githubusercontent.com/57904979/153343745-890bf2ba-223f-455e-b34d-e3846b9552ed.png)
+![image](https://user-images.githubusercontent.com/57904979/153343789-115c233b-a3ba-4f87-96bd-32a577585615.png)
+![image](https://user-images.githubusercontent.com/57904979/153344474-3251a717-e27f-4a26-9df1-d2f78a470c5e.png)
