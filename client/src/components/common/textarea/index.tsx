@@ -21,7 +21,11 @@ class TextArea extends Component {
 
   public markup(): string {
     const { value, placeholder, maxlength } = this.props;
-    return <textarea class="textarea" placeholder={placeholder} maxlength={maxlength} value={value}></textarea>;
+    return (
+      <textarea class="textarea" placeholder={placeholder} maxlength={maxlength} value={value}>
+        {value}
+      </textarea>
+    );
   }
 }
 
