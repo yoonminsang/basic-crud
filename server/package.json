@@ -13,7 +13,9 @@
     "lint:fix": "eslint src --ext .ts --parser-options=project:'tsconfig.json' --fix",
     "test": "jest --config ./jest.config.ts",
     "test:clean": "jest --config ./jest.config.ts --silent",
-    "test:coverage": "jest --config ./jest.config.ts --coverage --silent"
+    "test:coverage": "jest --config ./jest.config.ts --coverage --silent",
+    "seed:dev": "tsc && cross-env NODE_ENV=development ts-node --files -r tsconfig-paths/register dist/seed/index.js",
+    "seed:prod": "tsc && cross-env NODE_ENV=production ts-node --files -r tsconfig-paths/register dist/seed/index.js"
   },
   "dependencies": {
     "cookie-parser": "^1.4.5",
