@@ -34,7 +34,7 @@ class Dropdown extends Component {
         <div class="btn-dropdown-container" component />
         <div class={`dropdown ${!isDropdown ? 'blind' : ''}`}>
           {dropdowns.map((dropdown) => (
-            <button type="button" class="js-search-type" data-dropdown={dropdown}>
+            <button type="button" class="js-dropdown-item" data-dropdown={dropdown}>
               {changeText(dropdown)}
             </button>
           ))}
@@ -56,7 +56,7 @@ class Dropdown extends Component {
     this.addDelegation('click', `.js-dropdown`, () => {
       this.setState({ isDropdown: !this.state.isDropdown });
     });
-    this.addDelegation('click', '.js-search-type', (e: Event) => {
+    this.addDelegation('click', '.js-dropdown-item', (e: Event) => {
       const dropdown = (e.target as HTMLElement).dataset.dropdown as string;
       this.props.eventHandler(dropdown);
       this.setState({ isDropdown: false });
