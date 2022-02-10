@@ -70,7 +70,7 @@ class PostListHeader extends Component {
   }
 
   public setDelegation(): void {
-    this.addDelegation('click', 'js-init', () => postStore.setOptionInit());
+    this.addDelegation('click', '.js-init', () => postStore.setOptionInit());
     this.addDelegation('click', '.js-refresh', () => this.getData());
   }
 
