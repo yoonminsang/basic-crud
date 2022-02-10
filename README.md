@@ -130,6 +130,7 @@ $ cd server && yarn prod or yarn prod:basic
 - core 리팩토링
 - 전체적인 리팩토링
 - 스타일
+- 최적화
 
 ![image](https://user-images.githubusercontent.com/57904979/153343674-d357b191-cd2a-4608-8397-b8aabb869a35.png)
 ![image](https://user-images.githubusercontent.com/57904979/153343745-890bf2ba-223f-455e-b34d-e3846b9552ed.png)
