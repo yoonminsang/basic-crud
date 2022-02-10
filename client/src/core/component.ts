@@ -224,9 +224,6 @@ abstract class Component {
   // addDelegation을 넣는 메서드
   public setDelegation() {}
 
-  // addEvent를 넣는 메서드
-  public setEvent() {}
-
   public addDelegation(eventType: keyof DocumentEventMap, selector: string, callback: (e: Event) => void) {
     const curry = (e: Event) => {
       if ((e.target as HTMLElement).closest(selector)) callback(e);
@@ -259,7 +256,6 @@ abstract class Component {
   private checkNeedUpdate(changeState: TState) {
     // eslint-disable-next-line no-restricted-syntax
     for (const key in changeState) {
-      // if (JSON.stringify(changeState[key]) !== JSON.stringify(this.state[key])) return true;
       if (!Object.is(changeState[key], this.state[key])) return true;
     }
     return false;
