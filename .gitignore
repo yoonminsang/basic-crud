@@ -18,6 +18,9 @@ logs
 # coverage
 coverage
 
+# snapshot
+__snapshots__
+
 .DS_Store
 
 db.json
