@@ -80,7 +80,7 @@ abstract class Component {
       });
     }
 
-    // state를 render할 때 문자열이 아닌 경우 에러 방지
+    // node가 jsx가 아닌 경우 string으로 변환
     const parseChildren = children.map((child) => {
       if (typeof child !== 'object') return String(child);
       return child;
@@ -134,7 +134,6 @@ abstract class Component {
 
     // html tag가 바뀔경우 전체를 replace
     if (newNode.nodeName !== oldNode.nodeName) {
-      // const index = [...parent.childNodes].indexOf(oldNode);
       parent.replaceChild(newNode, oldNode);
       return;
     }
