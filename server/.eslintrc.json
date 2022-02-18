@@ -31,7 +31,9 @@
         "argsIgnorePattern": "^_"
       }
     ],
-    "jest/no-conditional-expect": "off"
+    "jest/no-conditional-expect": "off",
+    "no-empty-function": "off",
+    "no-useless-constructor": "off"
   },
   "ignorePatterns": ["jest.config.ts"]
 }
