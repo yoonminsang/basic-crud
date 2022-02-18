@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import dotEnvConfig from '@/config/dot-env-config';
 import { Application } from 'express';
 import expressLoader from './express-loader';

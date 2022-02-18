@@ -28,7 +28,9 @@
     "node-json-db": "^1.4.1",
     "node-mocks-http": "^1.11.0",
     "pm2": "^5.1.2",
+    "reflect-metadata": "^0.1.13",
     "ts-node": "^10.4.0",
+    "typedi": "^0.10.0",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.5"
   },
