@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import PostService from '@/services/post-service';
 import { TSearchType } from '@/types';
+import Container from 'typedi';
 
 interface ICreatePost {
   title: string;
@@ -24,7 +25,7 @@ interface IUpdatePost {
   content: string;
 }
 
-const service = new PostService();
+const service = Container.get(PostService);
 
 class PostController {
   public createPost(req: Request, res: Response, next: NextFunction) {

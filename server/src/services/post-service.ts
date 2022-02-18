@@ -1,19 +1,22 @@
+import { Service } from 'typedi';
 import { POST_ERROR } from '@/constants/error';
 import CustomError from '@/error/custom-error';
 import PostRepository from '@/repositories/post-repository';
 import { TSearchType } from '@/types';
 
 const searchesByNotReg = ['user'];
-const postRepository = new PostRepository();
 
+@Service()
 class PostService {
+  constructor(private postRepository: PostRepository) {}
+
   public createPost(title: string, content: string, user: string) {
-    const postId = postRepository.createPost(title, content, user);
+    const postId = this.postRepository.createPost(title, content, user);
     return postId;
   }
 
   public readPost(id: number) {
-    const post = postRepository.readPost(id);
+    const post = this.postRepository.readPost(id);
     if (!post) {
       throw new CustomError(POST_ERROR.notFoundPost);
     }
@@ -21,7 +24,7 @@ class PostService {
   }
 
   public readPostList(pageId: number, postNumber: number, isDescending: number) {
-    const { postList, pageCount } = postRepository.readPostList(pageId, postNumber, isDescending);
+    const { postList, pageCount } = this.postRepository.readPostList(pageId, postNumber, isDescending);
     return { postList, pageCount };
   }
 
@@ -33,25 +36,25 @@ class PostService {
     searchContent: string,
   ) {
     const { postList, pageCount } = searchesByNotReg.includes(searchType)
-      ? postRepository.readSearchPostList(pageId, postNumber, isDescending, searchType, searchContent)
-      : postRepository.readSearchPostListByReg(pageId, postNumber, isDescending, searchType, searchContent);
+      ? this.postRepository.readSearchPostList(pageId, postNumber, isDescending, searchType, searchContent)
+      : this.postRepository.readSearchPostListByReg(pageId, postNumber, isDescending, searchType, searchContent);
     return { postList, pageCount };
   }
 
   public updatePost(id: number, title: string, content: string) {
-    const post = postRepository.readPost(id);
+    const post = this.postRepository.readPost(id);
     if (!post) {
       throw new CustomError(POST_ERROR.notFoundPost);
     }
-    postRepository.updatePost(id, title, content);
+    this.postRepository.updatePost(id, title, content);
   }
 
   public deletePost(id: number) {
-    const post = postRepository.readPost(id);
+    const post = this.postRepository.readPost(id);
     if (!post) {
       throw new CustomError(POST_ERROR.notFoundPost);
     }
-    postRepository.deletePost(id);
+    this.postRepository.deletePost(id);
   }
 }
 

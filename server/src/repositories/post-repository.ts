@@ -2,6 +2,7 @@ import connect from '@/config/db-config';
 import { DB_ERROR } from '@/constants/error';
 import CustomError from '@/error/custom-error';
 import { TSearchType } from '@/types';
+import { Service } from 'typedi';
 
 export interface IPost {
   title: string;
@@ -28,6 +29,7 @@ let cashPostList: TPostList = {};
 // 간단한 JSON db
 // 변수로 캐시적용
 
+@Service()
 class PostRepository {
   private getPostListKey(pageId: number, postNumber: number, isDescending: number) {
     const key = `pageId:${pageId} postNumber:${postNumber} isDescending:${isDescending}`;
