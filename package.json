@@ -1,0 +1,22 @@
+{
+  "name": "zum",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/yoonminsang/basic-crud.git",
+  "author": "yoonminsang <apdlyooapdl@naver.com>",
+  "license": "MIT",
+  "scripts": {
+    "prepare": "husky install",
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "**/*.{ts,tsx}": [
+      "yarn lint"
+    ]
+  },
+  "devDependencies": {
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.4",
+    "typescript": "^4.5.5"
+  }
+}
