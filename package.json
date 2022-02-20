@@ -6,6 +6,7 @@
   "author": "yoonminsang <apdlyooapdl@naver.com>",
   "license": "MIT",
   "scripts": {
+    "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx --parser-options=project:'./tsconfig.json'",
     "prepare": "husky install",
     "lint-staged": "lint-staged"
   },

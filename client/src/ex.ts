@@ -1,3 +1,3 @@
 function hi() {
-  console.log(1);
+  return 1;
 }
