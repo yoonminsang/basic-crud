@@ -6,19 +6,14 @@
   "author": "yoonminsang <apdlyooapdl@naver.com>",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx --parser-options=project:'./tsconfig.json'",
     "prepare": "husky install",
-    "lint-staged": "lint-staged",
-    "test": "cd client && yarn test"
-  },
-  "lint-staged": {
-    "**/*.{ts,tsx}": [
-      "yarn lint"
-    ]
+    "test": "cd client && yarn test:clean && cd../server && yarn test:clean",
+    "lint": "cd client && yarn lint && cd../server && yarn lint",
+    "lint:fix": "cd client && yarn lint:fix && cd../server && yarn lint:fix",
+    "lint-staged": "cd client && yarn lint-staged && cd../server && yarn lint-staged"
   },
   "devDependencies": {
     "husky": "^7.0.4",
-    "lint-staged": "^12.3.4",
     "typescript": "^4.5.5"
   }
 }

@@ -7,16 +7,17 @@
     "start": "webpack serve --config config/webpack.dev.js --progress",
     "build": "webpack --config config/webpack.prod.js --progress",
     "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx --parser-options=project:'./tsconfig.json'",
+    "lint:fix": "eslint src --ext .ts --parser-options=project:'tsconfig.json' --fix",
     "test": "jest --config ./jest.config.js",
     "test:snapshot": "jest --config ./jest.config.js --updateSnapshot --silent",
     "test:clean": "jest --config ./jest.config.js --silent",
     "test:coverage": "jest --config ./jest.config.js --coverage --silent",
-    "prepare": "husky install",
     "lint-staged": "lint-staged"
   },
   "lint-staged": {
-    "**/*.{ts,tsx}": [
-      "yarn lint"
+    "*.{ts,tsx}": [
+      "yarn lint:fix",
+      "prettier --write"
     ]
   },
   "devDependencies": {
@@ -49,6 +50,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.4.5",
     "jest-fetch-mock": "^3.0.3",
+    "lint-staged": "^12.3.4",
     "mini-css-extract-plugin": "^2.4.5",
     "prettier": "^2.4.1",
     "style-loader": "^3.3.1",

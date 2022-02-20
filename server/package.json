@@ -15,7 +15,14 @@
     "test:clean": "jest --config ./jest.config.ts --silent",
     "test:coverage": "jest --config ./jest.config.ts --coverage --silent",
     "seed:dev": "tsc && cross-env NODE_ENV=development ts-node --files -r tsconfig-paths/register dist/seed/index.js",
-    "seed:prod": "tsc && cross-env NODE_ENV=production ts-node --files -r tsconfig-paths/register dist/seed/index.js"
+    "seed:prod": "tsc && cross-env NODE_ENV=production ts-node --files -r tsconfig-paths/register dist/seed/index.js",
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "yarn lint:fix",
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "class-transformer": "^0.5.1",
@@ -54,6 +61,7 @@
     "eslint-plugin-jest": "^25.2.2",
     "eslint-plugin-prettier": "3.2.0",
     "jest": "^27.3.1",
+    "lint-staged": "^12.3.4",
     "prettier": "^2.4.0",
     "supertest": "^6.1.6",
     "ts-jest": "^27.0.7",
