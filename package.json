@@ -9,7 +9,7 @@
     "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx --parser-options=project:'./tsconfig.json'",
     "prepare": "husky install",
     "lint-staged": "lint-staged",
-    "test": "cd client \n yarn test && cd server \n yarn test"
+    "test": "cd client \n yarn test"
   },
   "lint-staged": {
     "**/*.{ts,tsx}": [
