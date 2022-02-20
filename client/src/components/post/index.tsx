@@ -1,10 +1,11 @@
 /** @jsx jsx */
+import { IPostDetail } from 'common/types/IPost';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import jsx from '@/core/jsx';
 import Component from '@/core/component';
 import './style.css';
 import { IRouterState } from '@/core/types';
-import { IPostDetail } from '@/types/IPost';
+// import { IPostDetail } from '@/types/IPost';
 import { useHistory } from '@/core/routerHooks';
 import postStore from '@/store/post-store';
 import { parseTime } from '@/utils/parser';

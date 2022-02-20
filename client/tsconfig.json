@@ -46,9 +46,10 @@
 
     /* Module Resolution Options */
     "moduleResolution": "node" /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */,
-    "baseUrl": "." /* Base directory to resolve non-absolute module names. */,
+    "baseUrl": "../" /* Base directory to resolve non-absolute module names. */,
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./client/src/*"],
+      "common/*": ["./common/*"]
     } /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */,
     // "rootDirs": [],                              /* List of root folders whose combined content represents the structure of the project at runtime. */
     "typeRoots": ["src/custom-types", "node_modules/@types"] /* List of folders to include type definitions from. */,
@@ -72,6 +73,6 @@
     "skipLibCheck": true /* Skip type checking of declaration files. */,
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "../common/**/*"],
   "exclude": ["**/dist/**", "**/node_modules/**"]
 }
