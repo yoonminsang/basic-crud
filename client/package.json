@@ -10,7 +10,14 @@
     "test": "jest --config ./jest.config.js",
     "test:snapshot": "jest --config ./jest.config.js --updateSnapshot --silent",
     "test:clean": "jest --config ./jest.config.js --silent",
-    "test:coverage": "jest --config ./jest.config.js --coverage --silent"
+    "test:coverage": "jest --config ./jest.config.js --coverage --silent",
+    "prepare": "husky install",
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "**/*.{ts,tsx}": [
+      "yarn lint"
+    ]
   },
   "devDependencies": {
     "@babel/cli": "^7.16.0",
